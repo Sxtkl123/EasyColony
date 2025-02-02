@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.sxtkl.easycolony.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "easycolony.refmap.json",
+  "mixins": [
+    "common.minecolonies.EntityAIStructureBuilderMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
