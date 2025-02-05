@@ -11,6 +11,7 @@ import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedP
 import com.minecolonies.core.entity.pathfinding.pathjobs.AbstractPathJob;
 import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobMoveCloseToXNearY;
 import com.minecolonies.core.entity.pathfinding.pathresults.PathResult;
+import com.sxtkl.easycolony.Config;
 import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,45 +32,46 @@ public abstract class EntityAIStructureBuilderMixin extends AbstractEntityAIStru
 
     @Inject(method = "walkToConstructionSite", at = @At("HEAD"), remap = false, cancellable = true)
     public void walkToConstructionSite(final BlockPos currentBlock, CallbackInfoReturnable<Boolean> cir) {
-        final IWorkOrder wo = job.getWorkOrder();
-        BlockPos pos = wo.getLocation();
-        if (workFrom != null && workFrom.getX() == pos.getX() && workFrom.getZ() == pos.getZ() && workFrom.getY() >= pos.getY()) {
-            workFrom = null;
-        }
-
-        if (workFrom == null) {
-            if (gotoPath == null || gotoPath.isCancelled()) {
-                final PathJobMoveCloseToXNearY pathJob = new PathJobMoveCloseToXNearY(world,
-                        pos,
-                        job.getWorkOrder().getLocation(),
-                        4,
-                        worker);
-                gotoPath = ((MinecoloniesAdvancedPathNavigate) worker.getNavigation()).setPathJob(pathJob, pos, 1.0, false);
-                pathJob.getPathingOptions().dropCost = 200;
-                pathJob.extraNodes = 0;
+        if (Config.easyBuilderAI) {
+            final IWorkOrder wo = job.getWorkOrder();
+            BlockPos pos = wo.getLocation();
+            if (workFrom != null && workFrom.getX() == pos.getX() && workFrom.getZ() == pos.getZ() && workFrom.getY() >= pos.getY()) {
+                workFrom = null;
             }
-            else if (gotoPath.isDone()) {
-                if (gotoPath.getPath() != null) {
-                    workFrom = gotoPath.getPath().getTarget();
+
+            if (workFrom == null) {
+                if (gotoPath == null || gotoPath.isCancelled()) {
+                    final PathJobMoveCloseToXNearY pathJob = new PathJobMoveCloseToXNearY(world,
+                            pos,
+                            job.getWorkOrder().getLocation(),
+                            4,
+                            worker);
+                    gotoPath = ((MinecoloniesAdvancedPathNavigate) worker.getNavigation()).setPathJob(pathJob, pos, 1.0, false);
+                    pathJob.getPathingOptions().dropCost = 200;
+                    pathJob.extraNodes = 0;
+                } else if (gotoPath.isDone()) {
+                    if (gotoPath.getPath() != null) {
+                        workFrom = gotoPath.getPath().getTarget();
+                    }
+                    gotoPath = null;
                 }
-                gotoPath = null;
+                cir.setReturnValue(false);
+                return;
             }
-            cir.setReturnValue(false);
-            return;
-        }
 
-        if (!walkToSafePos(workFrom)) {
-            cir.setReturnValue(false);
-            return;
-        }
+            if (!walkToSafePos(workFrom)) {
+                cir.setReturnValue(false);
+                return;
+            }
 
-        if (BlockPosUtil.getDistance2D(worker.blockPosition(), pos) > 5) {
-            double distToBuilding = BlockPosUtil.dist(workFrom, job.getWorkOrder().getLocation());
-            workFrom = null;
-            cir.setReturnValue(distToBuilding < 100);
-            return;
-        }
+            if (BlockPosUtil.getDistance2D(worker.blockPosition(), pos) > 5) {
+                double distToBuilding = BlockPosUtil.dist(workFrom, job.getWorkOrder().getLocation());
+                workFrom = null;
+                cir.setReturnValue(distToBuilding < 100);
+                return;
+            }
 
-        cir.setReturnValue(true);
+            cir.setReturnValue(true);
+        }
     }
 }

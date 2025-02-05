@@ -6,6 +6,8 @@ import com.minecolonies.core.colony.buildings.AbstractBuilding;
 import com.minecolonies.core.colony.jobs.AbstractJob;
 import com.minecolonies.core.entity.ai.workers.AbstractAISkeleton;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIBasic;
+import com.sxtkl.easycolony.Config;
+import com.sxtkl.easycolony.Easycolony;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -54,35 +56,36 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 
     @Inject(method = "getNeededItem", at = @At("HEAD"), remap = false, cancellable = true)
     private void getNeededItem(CallbackInfoReturnable<IAIState> cir) {
-        if (needsCurrently == null) {
-            cir.setReturnValue(getStateAfterPickUp());
-            return;
-        }
-        else {
-            if (walkTo == null) {
-                final BlockPos pos = building.getTileEntity().getTilePos();
-                if (pos == null) {
-                    cir.setReturnValue(getStateAfterPickUp());
+        if (Config.easyPickMaterialAI) {
+            if (needsCurrently == null) {
+                cir.setReturnValue(getStateAfterPickUp());
+                return;
+            } else {
+                if (walkTo == null) {
+                    final BlockPos pos = building.getTileEntity().getTilePos();
+                    if (pos == null) {
+                        cir.setReturnValue(getStateAfterPickUp());
+                        return;
+                    }
+                    walkTo = pos;
+                }
+
+                if (!walkToWorkPos(walkTo) && pickUpCounter++ < PICKUP_ATTEMPTS) {
+                    cir.setReturnValue(getState());
                     return;
                 }
-                walkTo = pos;
+
+                pickUpCounter = 0;
+
+                if (!tryTransferFromPosToWorkerIfNeeded(walkTo, needsCurrently)) {
+                    walkTo = null;
+                    cir.setReturnValue(getState());
+                    return;
+                }
             }
 
-            if (!walkToWorkPos(walkTo) && pickUpCounter++ < PICKUP_ATTEMPTS) {
-                cir.setReturnValue(getState());
-                return;
-            }
-
-            pickUpCounter = 0;
-
-            if (!tryTransferFromPosToWorkerIfNeeded(walkTo, needsCurrently)) {
-                walkTo = null;
-                cir.setReturnValue(getState());
-                return;
-            }
+            walkTo = null;
+            cir.setReturnValue(getStateAfterPickUp());
         }
-
-        walkTo = null;
-        cir.setReturnValue(getStateAfterPickUp());
     }
 }
