@@ -7,7 +7,6 @@ import com.minecolonies.core.colony.jobs.AbstractJob;
 import com.minecolonies.core.entity.ai.workers.AbstractAISkeleton;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIBasic;
 import com.sxtkl.easycolony.Config;
-import com.sxtkl.easycolony.Easycolony;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
