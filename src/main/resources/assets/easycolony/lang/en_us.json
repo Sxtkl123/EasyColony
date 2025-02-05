@@ -1,2 +1,3 @@
 {
+  "com.sxtkl.easycolony.colony.hurt.message": "I was hurt by %s at (X: %d, Y: %d, Z: %d)."
 }

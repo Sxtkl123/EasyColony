@@ -7,7 +7,8 @@
   "mixins": [
     "common.minecolonies.EntityAIStructureBuilderMixin",
     "common.minecolonies.AbstractEntityAIBasicMixin",
-    "common.minecolonies.AbstractEntityAIStructureMixin"
+    "common.minecolonies.AbstractEntityAIStructureMixin",
+    "common.minecolonies.EntityCitizenMixin"
   ],
   "client": [
   ],
