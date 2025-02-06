@@ -6,7 +6,6 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.entity.citizen.citizenhandlers.ICitizenJobHandler;
 import com.minecolonies.api.util.MessageUtils;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -49,12 +48,12 @@ public abstract class EntityCitizenMixin extends AbstractEntityCitizen implement
                 (int) this.getX(),
                 (int) this.getY(),
                 (int) this.getZ()
-        ).withStyle(ChatFormatting.RED);
+        );
         IColony colony = this.getCitizenColonyHandler().getColonyOrRegister();
         if (colony == null) {
             return;
         }
-        MessageUtils.forCitizen(this, message).sendTo(colony.getImportantMessageEntityPlayers());
+        MessageUtils.forCitizen(this, message).withPriority(MessageUtils.MessagePriority.IMPORTANT).sendTo(colony.getImportantMessageEntityPlayers());
     }
 
 }
