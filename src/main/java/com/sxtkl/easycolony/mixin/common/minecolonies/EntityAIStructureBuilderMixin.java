@@ -21,9 +21,10 @@ public abstract class EntityAIStructureBuilderMixin extends AbstractEntityAIStru
 
     // 注入修改土木工人寻路逻辑
     @ModifyVariable(method = "walkToConstructionSite", at = @At("HEAD"), argsOnly = true, remap = false)
-    public BlockPos walkTo(BlockPos value) {
+    public BlockPos walkToConstructionSite$currentBlock(BlockPos currentBlock) {
+        // TODO: 进行性能优化，目前该写法虽然可以解决问题，可是却会进行额外的寻路尝试，尽管和原版的性能开销相同，但是可以进行优化。
         if (!Config.easyBuilderAI) {
-            return value;
+            return currentBlock;
         }
         final IWorkOrder wo = job.getWorkOrder();
         return wo.getLocation();
