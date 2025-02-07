@@ -1,3 +1,13 @@
 {
-  "com.sxtkl.easycolony.colony.hurt.message": "我被 %s 锤了！速来（X = %d, Y = %d, Z = %d）救架！"
+  "com.sxtkl.easycolony.colony.hurt.message": "我被 %s 锤了！速来（X = %d, Y = %d, Z = %d）救架！",
+  "com.sxtkl.easycolony.event.resurrect.no_grave_data": "这个墓碑似乎没有寄宿着亡魂...",
+  "com.sxtkl.easycolony.event.resurrect.no_colony": "这个亡魂似乎迷失了方向...",
+  "com.sxtkl.easycolony.event.resurrect.success0": "黑白无常跟丢了 %s 。",
+  "com.sxtkl.easycolony.event.resurrect.success1": "%s 从冥界挣脱出来了。",
+  "com.sxtkl.easycolony.event.resurrect.success2": "%s 命不该绝。",
+  "com.sxtkl.easycolony.event.resurrect.success3": "%s 活了过来。",
+  "com.sxtkl.easycolony.event.resurrect.fail0": "你在召唤 %s 的亡魂，但是他拒绝了。",
+  "com.sxtkl.easycolony.event.resurrect.fail1": "%s 不愿醒来。",
+  "com.sxtkl.easycolony.event.resurrect.fail2": "%s 的灵魂没有回应...",
+  "com.sxtkl.easycolony.event.resurrect.fail3": "%s 想要就此长眠。"
 }

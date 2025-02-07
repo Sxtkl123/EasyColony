@@ -27,9 +27,7 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
     // 修改工人取货逻辑，使其在工作方块处取货
     @ModifyVariable(method = "getNeededItem", at = @At("STORE"), ordinal = 0, remap = false)
     private BlockPos getNeedItem$pos(BlockPos value) {
-        if (!Config.easyPickMaterialAI) {
-            return value;
-        }
+        if (!Config.easyPickMaterialAI) return value;
         return building.getTileEntity().getTilePos();
     }
 }

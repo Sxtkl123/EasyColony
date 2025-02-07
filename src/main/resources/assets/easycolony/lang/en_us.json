@@ -1,3 +1,13 @@
 {
-  "com.sxtkl.easycolony.colony.hurt.message": "I was hurt by %s at (X: %d, Y: %d, Z: %d)."
+  "com.sxtkl.easycolony.colony.hurt.message": "I was hurt by %s at (X: %d, Y: %d, Z: %d).",
+  "com.sxtkl.easycolony.event.resurrect.no_grave_data": "This grave does not seem to be hosting the souls of the dead...",
+  "com.sxtkl.easycolony.event.resurrect.no_colony": "This lonely soul seems to have lost his way...",
+  "com.sxtkl.easycolony.event.resurrect.success0": "%s out of hell.",
+  "com.sxtkl.easycolony.event.resurrect.success1": "%s deliverance from hell.",
+  "com.sxtkl.easycolony.event.resurrect.success2": "%s's lives should not be extinguished.",
+  "com.sxtkl.easycolony.event.resurrect.success3": "%s came alive.",
+  "com.sxtkl.easycolony.event.resurrect.fail0": "%s refused.",
+  "com.sxtkl.easycolony.event.resurrect.fail1": "%s reluctant to return.",
+  "com.sxtkl.easycolony.event.resurrect.fail2": "%s's soul did not respond.",
+  "com.sxtkl.easycolony.event.resurrect.fail3": "%s reluctant to wake up."
 }

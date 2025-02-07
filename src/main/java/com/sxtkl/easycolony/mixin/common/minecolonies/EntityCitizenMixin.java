@@ -34,13 +34,9 @@ public abstract class EntityCitizenMixin extends AbstractEntityCitizen implement
     public void hurt(DamageSource damageSource, float damage, CallbackInfoReturnable<Boolean> cir) {
         Entity src = damageSource.getEntity();
         // 判断是否受到的伤害来源为实体
-        if (src == null) {
-            return;
-        }
+        if (src == null) return;
         // 判断是否为卫兵
-        if (citizenJobHandler.getColonyJob() != null && citizenJobHandler.getColonyJob().isGuard()) {
-            return;
-        }
+        if (citizenJobHandler.getColonyJob() != null && citizenJobHandler.getColonyJob().isGuard()) return;
         // 发出通告，说自己被锤了
         MutableComponent message = Component.translatable(
                 "com.sxtkl.easycolony.colony.hurt.message",
@@ -50,9 +46,7 @@ public abstract class EntityCitizenMixin extends AbstractEntityCitizen implement
                 (int) this.getZ()
         );
         IColony colony = this.getCitizenColonyHandler().getColonyOrRegister();
-        if (colony == null) {
-            return;
-        }
+        if (colony == null) return;
         MessageUtils.forCitizen(this, message).withPriority(MessageUtils.MessagePriority.IMPORTANT).sendTo(colony.getImportantMessageEntityPlayers());
     }
 
