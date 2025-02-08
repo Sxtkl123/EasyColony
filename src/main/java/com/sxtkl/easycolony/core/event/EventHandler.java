@@ -1,7 +1,11 @@
 package com.sxtkl.easycolony.core.event;
 
 import com.minecolonies.api.colony.*;
+import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.tileentities.AbstractTileEntityGrave;
+import com.minecolonies.api.tileentities.AbstractTileEntityNamedGrave;
+import com.minecolonies.core.colony.buildings.modules.GraveyardManagementModule;
+import com.minecolonies.core.colony.buildings.workerbuildings.BuildingGraveyard;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -14,25 +18,39 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.Map;
 
 
 public class EventHandler {
 
     @SubscribeEvent
     public static void onPlayerInteract$RightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
-        // TODO: 测试命名的墓碑是否可以正常运行，否则编写相关代码。
-        if (true) return;
-        if (event.getSide().isClient()) return;
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockEntity entity = level.getBlockEntity(pos);
         ItemStack stack = event.getItemStack();
-        Player player = event.getEntity();
+
         if (entity == null) return;
-        if (!(entity instanceof AbstractTileEntityGrave grave)) return;
         if (!event.getEntity().isShiftKeyDown()) return;
         if (stack.getItem() != Items.TOTEM_OF_UNDYING) return;
+        if (!(entity instanceof AbstractTileEntityGrave) && !(entity instanceof AbstractTileEntityNamedGrave)) return;
         event.setCanceled(true);
+        if (event.getSide().isClient()) return;
+
+        if (entity instanceof AbstractTileEntityGrave grave) {
+            resurrectGrave(level, pos, event.getEntity(), stack, grave);
+        } else if (entity instanceof AbstractTileEntityNamedGrave grave) {
+            event.setCanceled(true);
+            if (event.getSide().isClient()) return;
+            // TODO: 编写有名字的墓碑的相关代码。
+            resurrectNamedGrave(level, pos, event.getEntity(), stack, grave);
+        }
+    }
+
+    private static void resurrectGrave(Level level, BlockPos pos, Player player, ItemStack stack, AbstractTileEntityGrave grave) {
         final IGraveData gData = grave.getGraveData();
         Component msg;
         if (gData == null) {
@@ -60,5 +78,24 @@ public class EventHandler {
         player.sendSystemMessage(msg);
         if (player.isCreative()) return;
         stack.shrink(1);
+    }
+
+    private static void resurrectNamedGrave(Level level, BlockPos pos, Player player, ItemStack stack, AbstractTileEntityNamedGrave grave) {
+        //TODO: 常规方法是行不通了，直接mixin吧！
+    }
+
+    @Nullable
+    private static GraveyardManagementModule getGraveyardManagementModule(IColony colony, String citizenName, AbstractTileEntityNamedGrave grave) {
+        if (colony == null) return null;
+        Map<BlockPos, IBuilding> buildings = colony.getBuildingManager().getBuildings();
+        for (IBuilding building : buildings.values()) {
+            if (building instanceof BuildingGraveyard graveyard) {
+                GraveyardManagementModule firstModuleOccurance = graveyard.getFirstModuleOccurance(GraveyardManagementModule.class);
+                if (firstModuleOccurance.hasRestingCitizen(Collections.singleton(citizenName))) {
+                    return firstModuleOccurance;
+                }
+            }
+        }
+        return null;
     }
 }

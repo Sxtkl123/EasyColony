@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.sxtkl.easycolony.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "refmap": "easycolony.refmap.json",
   "mixins": [
     "common.minecolonies.AbstractEntityAIBasicMixin",

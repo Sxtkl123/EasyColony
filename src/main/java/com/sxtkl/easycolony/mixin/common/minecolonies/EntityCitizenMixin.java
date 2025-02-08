@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 
-@Mixin(value = EntityCitizen.class, remap = false)
+@Mixin(value = EntityCitizen.class)
 public abstract class EntityCitizenMixin extends AbstractEntityCitizen implements IThreatTableEntity {
 
     @Shadow(remap = false)
@@ -30,7 +30,7 @@ public abstract class EntityCitizenMixin extends AbstractEntityCitizen implement
         super(type, world);
     }
 
-    @Inject(method = "hurt", at = @At("HEAD"), remap = false)
+    @Inject(method = "hurt", at = @At("HEAD"))
     public void hurt(DamageSource damageSource, float damage, CallbackInfoReturnable<Boolean> cir) {
         Entity src = damageSource.getEntity();
         // 判断是否受到的伤害来源为实体
