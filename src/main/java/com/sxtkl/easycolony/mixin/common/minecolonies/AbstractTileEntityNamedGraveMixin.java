@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 
-@Mixin(value = AbstractTileEntityNamedGrave.class, remap = false)
+@Mixin(AbstractTileEntityNamedGrave.class)
 public abstract class AbstractTileEntityNamedGraveMixin extends BlockEntity implements IGraveDataExtension {
 
     @Unique
