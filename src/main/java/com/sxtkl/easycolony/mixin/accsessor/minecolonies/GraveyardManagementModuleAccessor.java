@@ -6,10 +6,10 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.List;
 
-@Mixin(GraveyardManagementModule.class)
+@Mixin(value = GraveyardManagementModule.class, remap = false)
 public interface GraveyardManagementModuleAccessor {
 
-    @Accessor
+    @Accessor(remap = false)
     List<String> getRestingCitizen();
 
 }

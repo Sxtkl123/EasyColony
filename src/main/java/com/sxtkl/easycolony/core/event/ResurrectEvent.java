@@ -7,6 +7,7 @@ import com.minecolonies.api.tileentities.AbstractTileEntityNamedGrave;
 import com.minecolonies.core.colony.buildings.modules.GraveyardManagementModule;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingGraveyard;
 import com.sxtkl.easycolony.Config;
+import com.sxtkl.easycolony.Easycolony;
 import com.sxtkl.easycolony.extension.IGraveDataExtension;
 import com.sxtkl.easycolony.mixin.accsessor.minecolonies.GraveyardManagementModuleAccessor;
 import net.minecraft.ChatFormatting;
@@ -15,19 +16,20 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
 
 
-public class EventHandler {
+@Mod.EventBusSubscriber(modid = Easycolony.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+public class ResurrectEvent {
 
     @SubscribeEvent
     public static void onPlayerInteract$RightClickBlock(final PlayerInteractEvent.RightClickBlock event) {

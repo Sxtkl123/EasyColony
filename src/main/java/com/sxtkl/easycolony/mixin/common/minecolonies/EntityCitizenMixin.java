@@ -2,6 +2,8 @@ package com.sxtkl.easycolony.mixin.common.minecolonies;
 
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.entity.ai.combat.threat.IThreatTableEntity;
+import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
+import com.minecolonies.api.entity.ai.statemachine.states.IState;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.entity.citizen.citizenhandlers.ICitizenJobHandler;
 import com.minecolonies.api.util.MessageUtils;
