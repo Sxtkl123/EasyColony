@@ -14,6 +14,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -33,7 +34,6 @@ public class ResurrectEvent {
 
     @SubscribeEvent
     public static void onPlayerInteract$RightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
-        if (event.getSide().isClient()) return;
         if (!Config.allowResurrect) return;
 
         Level level = event.getLevel();
@@ -46,6 +46,8 @@ public class ResurrectEvent {
         if (stack.getItem() != Config.resurrectItem) return;
         if (!(entity instanceof AbstractTileEntityGrave) && !(entity instanceof AbstractTileEntityNamedGrave)) return;
         event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.CONSUME);
+        if (event.getSide().isClient()) return;
 
         if (entity instanceof AbstractTileEntityGrave grave) {
             IColony colony = IColonyManager.getInstance().getIColony(level, pos);
