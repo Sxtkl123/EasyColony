@@ -5,11 +5,14 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "easycolony.refmap.json",
   "mixins": [
+    "accsessor.minecolonies.GraveyardManagementModuleAccessor",
     "common.minecolonies.AbstractEntityAIBasicMixin",
     "common.minecolonies.AbstractEntityAIStructureMixin",
+    "common.minecolonies.AbstractTileEntityNamedGraveMixin",
     "common.minecolonies.EntityAIStructureBuilderMixin",
     "common.minecolonies.EntityCitizenMixin",
-    "common.minecolonies.FoodUtilsMixin"
+    "common.minecolonies.FoodUtilsMixin",
+    "common.minecolonies.GraveyardManagementModuleMixin"
   ],
   "client": [
   ],

@@ -1,14 +1,13 @@
 package com.sxtkl.easycolony.core.event;
 
-import com.minecolonies.api.colony.ICitizenData;
-import com.minecolonies.api.colony.IColony;
-import com.minecolonies.api.colony.IColonyManager;
-import com.minecolonies.api.colony.IGraveData;
+import com.minecolonies.api.colony.*;
 import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.tileentities.AbstractTileEntityGrave;
 import com.minecolonies.api.tileentities.AbstractTileEntityNamedGrave;
 import com.minecolonies.core.colony.buildings.modules.GraveyardManagementModule;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingGraveyard;
+import com.sxtkl.easycolony.extension.IGraveDataExtension;
+import com.sxtkl.easycolony.mixin.accsessor.minecolonies.GraveyardManagementModuleAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -31,6 +30,7 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void onPlayerInteract$RightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
+        if (event.getSide().isClient()) return;
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockEntity entity = level.getBlockEntity(pos);
@@ -41,34 +41,39 @@ public class EventHandler {
         if (stack.getItem() != Items.TOTEM_OF_UNDYING) return;
         if (!(entity instanceof AbstractTileEntityGrave) && !(entity instanceof AbstractTileEntityNamedGrave)) return;
         event.setCanceled(true);
-        if (event.getSide().isClient()) return;
 
         if (entity instanceof AbstractTileEntityGrave grave) {
-            resurrectGrave(level, pos, event.getEntity(), stack, grave);
+            IColony colony = IColonyManager.getInstance().getIColony(level, pos);
+            resurrect(colony, level, pos, event.getEntity(), grave.getGraveData());
         } else if (entity instanceof AbstractTileEntityNamedGrave grave) {
-            event.setCanceled(true);
-            if (event.getSide().isClient()) return;
-            // TODO: 编写有名字的墓碑的相关代码。
-            resurrectNamedGrave(level, pos, event.getEntity(), stack, grave);
+            IColony colony = IColonyManager.getInstance().getIColony(level, pos);
+            IGraveData graveData = ((IGraveDataExtension) grave).getGraveData();
+            resurrect(colony, level, pos, event.getEntity(), graveData);
+            GraveyardManagementModule module = getGraveyardManagementModule(colony, graveData.getCitizenName());
+            if (module != null) {
+                ((GraveyardManagementModuleAccessor) module).getRestingCitizen().remove(graveData.getCitizenName());
+                module.markDirty();
+            }
         }
+
+        if (event.getEntity().isCreative()) return;
+        stack.shrink(1);
     }
 
-    private static void resurrectGrave(Level level, BlockPos pos, Player player, ItemStack stack, AbstractTileEntityGrave grave) {
-        final IGraveData gData = grave.getGraveData();
+    private static void resurrect(IColony colony, Level level, BlockPos pos, Player player, IGraveData gData) {
         Component msg;
         if (gData == null) {
             msg = Component.translatable("com.sxtkl.easycolony.event.resurrect.no_grave_data").withStyle(ChatFormatting.GRAY);
             player.sendSystemMessage(msg);
             return;
         }
-        final IColony colony = IColonyManager.getInstance().getIColony(level, pos);
         if (colony == null) {
             msg = Component.translatable("com.sxtkl.easycolony.event.resurrect.no_colony").withStyle(ChatFormatting.GRAY);
             player.sendSystemMessage(msg);
             return;
         }
         if (gData.getCitizenDataNBT() == null) return;
-        if (level.random.nextDouble() <= colony.getOverallHappiness() / 10) {
+        if (level.random.nextDouble() <= getResurrectChance(colony)) {
             final ICitizenData citizenData = colony.getCitizenManager().resurrectCivilianData(gData.getCitizenDataNBT(), true, level, pos);
             colony.getCitizenManager().updateCitizenMourn(citizenData, false);
             level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
@@ -79,16 +84,23 @@ public class EventHandler {
             msg = Component.translatable("com.sxtkl.easycolony.event.resurrect.fail" + level.random.nextInt(4), gData.getCitizenName()).withStyle(ChatFormatting.GRAY);
         }
         player.sendSystemMessage(msg);
-        if (player.isCreative()) return;
-        stack.shrink(1);
     }
 
-    private static void resurrectNamedGrave(Level level, BlockPos pos, Player player, ItemStack stack, AbstractTileEntityNamedGrave grave) {
-        //TODO: 常规方法是行不通了，直接mixin吧！
+    private static double getResurrectChance(IColony colony) {
+        Map<BlockPos, IBuilding> buildings = colony.getBuildingManager().getBuildings();
+        int max = 0;
+        for (IBuilding building : buildings.values()) {
+            if (building instanceof BuildingGraveyard graveyard) {
+                max = Math.max(max, graveyard.getBuildingLevel());
+            }
+        }
+
+        double happiness = colony.getOverallHappiness();
+        return happiness / 10 * (max + 1) / 5;
     }
 
     @Nullable
-    private static GraveyardManagementModule getGraveyardManagementModule(IColony colony, String citizenName, AbstractTileEntityNamedGrave grave) {
+    private static GraveyardManagementModule getGraveyardManagementModule(IColony colony, String citizenName) {
         if (colony == null) return null;
         Map<BlockPos, IBuilding> buildings = colony.getBuildingManager().getBuildings();
         for (IBuilding building : buildings.values()) {
@@ -101,4 +113,5 @@ public class EventHandler {
         }
         return null;
     }
+
 }
