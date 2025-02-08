@@ -6,6 +6,7 @@ import com.minecolonies.api.tileentities.AbstractTileEntityGrave;
 import com.minecolonies.api.tileentities.AbstractTileEntityNamedGrave;
 import com.minecolonies.core.colony.buildings.modules.GraveyardManagementModule;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingGraveyard;
+import com.sxtkl.easycolony.Config;
 import com.sxtkl.easycolony.extension.IGraveDataExtension;
 import com.sxtkl.easycolony.mixin.accsessor.minecolonies.GraveyardManagementModuleAccessor;
 import net.minecraft.ChatFormatting;
@@ -31,6 +32,8 @@ public class EventHandler {
     @SubscribeEvent
     public static void onPlayerInteract$RightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
         if (event.getSide().isClient()) return;
+        if (!Config.allowResurrect) return;
+
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockEntity entity = level.getBlockEntity(pos);
@@ -38,7 +41,7 @@ public class EventHandler {
 
         if (entity == null) return;
         if (!event.getEntity().isShiftKeyDown()) return;
-        if (stack.getItem() != Items.TOTEM_OF_UNDYING) return;
+        if (stack.getItem() != Config.resurrectItem) return;
         if (!(entity instanceof AbstractTileEntityGrave) && !(entity instanceof AbstractTileEntityNamedGrave)) return;
         event.setCanceled(true);
 
@@ -96,7 +99,7 @@ public class EventHandler {
         }
 
         double happiness = colony.getOverallHappiness();
-        return happiness / 10 * (max + 1) / 5;
+        return happiness / 10 * (max + 1) / 5 * Config.resurrectChanceMultiplier;
     }
 
     @Nullable
