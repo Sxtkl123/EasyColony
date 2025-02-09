@@ -53,25 +53,49 @@ public class Config {
 
     private static final ForgeConfigSpec.DoubleValue RESURRECT_CHANCE_MULTIPLIER;
 
+    private static final ForgeConfigSpec.BooleanValue ALLOW_HURT_ALERT;
+
+    private static final ForgeConfigSpec.BooleanValue ALLOW_READ_MIND;
+
+    private static final ForgeConfigSpec.ConfigValue<String> READ_MIND_ITEM;
+
     static {
-        EASY_BUILDER_AI = BUILDER.comment("简易化建筑工人AI：建筑工人将固定在施工现场的工作方块附近建筑。")
-                .define("easy_builder_ai", true);
+        BUILDER.push("通用配置");
         EASY_PICK_MATERIAL_AI = BUILDER.comment("简易化材料寻找AI：工人在架子上找原材料时，将直接在对应的小屋方块建筑进行。")
                 .define("easy_pick_material_ai", true);
+        NOT_COLONY_FOOD_PENALTY_MULTIPLIER = BUILDER.comment("非殖民地食物惩罚倍率：市民食用非殖民地食物带来的饱食度惩罚倍率，原版为缩减倍率至：1 + 住宅等级\n如：对于一个5级住宅的市民，非殖民地食物将只能带来原本1/6的饱食度收益。\n在此基础上你可以缩减惩罚倍率，其原理是对住宅等级执行一次乘法，如乘法设为0.5，那么原本5级住宅将视为2级。")
+                .defineInRange("not_colony_food_penalty_multiplier", 1.0, 0, Integer.MAX_VALUE);
+        ALLOW_HURT_ALERT = BUILDER.comment("受击提示：是否允许非警卫市民受到攻击后发出警报。")
+                .define("allow_hurt_alert", true);
+        BUILDER.pop();
+
+        BUILDER.push("建筑工人配置");
+        EASY_BUILDER_AI = BUILDER.comment("简易化建筑工人AI：建筑工人将固定在施工现场的工作方块附近建筑。")
+                .define("easy_builder_ai", true);
         BUILDER_DELAY_MODE = BUILDER.comment("建筑工人间隔模式：可选择 fixed 或 magnification，对应下列的建筑工间隔修正模式，选择其他的则视为无效。")
                 .define("builder_delay_mode", "off");
         BUILDER_DELAY_MAGNIFICATION = BUILDER.comment("建筑工人间隔倍率：扩大或缩小建筑工人建筑、破坏的间隔倍率，只有建筑工人固定间隔设置为 magnification 时，该选项生效。")
                 .defineInRange("builder_delay_magnification", 1.0, 0, Integer.MAX_VALUE);
         BUILDER_FIXED_DELAY = BUILDER.comment("建筑工人间隔：建筑工人间隔的固定值，只有建筑工人固定间隔设置为 fixed 时，该选项生效。")
                 .defineInRange("builder_fixed_delay", 15, 0, Integer.MAX_VALUE);
-        NOT_COLONY_FOOD_PENALTY_MULTIPLIER = BUILDER.comment("非殖民地食物惩罚倍率：市民食用非殖民地食物带来的饱食度惩罚倍率，原版为缩减倍率至：1 + 住宅等级\n如：对于一个5级住宅的市民，非殖民地食物将只能带来原本1/6的饱食度收益。\n在此基础上你可以缩减惩罚倍率，其原理是对住宅等级执行一次乘法，如乘法设为0.5，那么原本5级住宅将视为2级。")
-                .defineInRange("not_colony_food_penalty_multiplier", 1.0, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("复活配置");
         ALLOW_RESURRECT = BUILDER.comment("是否允许玩家手动复活市民：如果允许，玩家将可以使用指定物品复活市民，成功率取决于总幸福度和墓地等级。")
                 .define("allow_resurrect", true);
         RESURRECT_ITEM = BUILDER.comment("复活市民所需物品：指定玩家复活市民所需的物品。")
                 .define("resurrect_item", "minecraft:totem_of_undying");
         RESURRECT_CHANCE_MULTIPLIER = BUILDER.comment("复活市民几率乘数：会在原有的复活概率基础上额外乘以一个系数。")
                 .defineInRange("resurrect_chance_multiplier", 1.0, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("市民思维读取器设置");
+        ALLOW_READ_MIND = BUILDER.comment("是否允许玩家读取市民行动：如果允许，玩家将可以手持特定物品右键市民读取市民当前行动。")
+                .define("allow_read_mind", true);
+        READ_MIND_ITEM = BUILDER.comment("读取行动所需物品：指定玩家读取市民行动所需的物品，不会消耗。")
+                .define("read_mind_item", "minecraft:compass");
+        BUILDER.pop();
+
         SPEC = BUILDER.build();
     }
 
@@ -93,6 +117,12 @@ public class Config {
 
     public static double resurrectChanceMultiplier;
 
+    public static boolean allowHurtAlert;
+
+    public static boolean allowReadMind;
+
+    public static Item readMindItem;
+
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
         easyBuilderAI = EASY_BUILDER_AI.get();
@@ -104,5 +134,8 @@ public class Config {
         allowResurrect = ALLOW_RESURRECT.get();
         resurrectItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(RESURRECT_ITEM.get()));
         resurrectChanceMultiplier = RESURRECT_CHANCE_MULTIPLIER.get();
+        allowHurtAlert = ALLOW_HURT_ALERT.get();
+        allowReadMind = ALLOW_READ_MIND.get();
+        readMindItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(READ_MIND_ITEM.get()));
     }
 }

@@ -10,6 +10,7 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.entity.citizen.citizenhandlers.ICitizenJobHandler;
 import com.minecolonies.api.util.MessageUtils;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
+import com.sxtkl.easycolony.Config;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -36,6 +37,7 @@ public abstract class EntityCitizenMixin extends AbstractEntityCitizen implement
 
     @Inject(method = "hurt", at = @At("HEAD"))
     public void hurt(DamageSource damageSource, float damage, CallbackInfoReturnable<Boolean> cir) {
+        if (!Config.allowHurtAlert) return;
         Entity src = damageSource.getEntity();
         // 判断是否受到的伤害来源为实体
         if (src == null) return;
