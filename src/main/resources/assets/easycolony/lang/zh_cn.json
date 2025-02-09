@@ -71,7 +71,7 @@
   "com.sxtkl.easycolony.state.baker_finishing": "完成制作",
   "com.sxtkl.easycolony.state.baker_take_out_of_oven": "将产品从烤箱中取出",
   "com.sxtkl.easycolony.state.start_using_furnace": "烧炼矿物",
-  "com.sxtkl.easycolony.state.gathering_required_materials": "收集矿物",
+  "com.sxtkl.easycolony.state.gathering_required_materials": "收集材料",
   "com.sxtkl.easycolony.state.retrieving_end_product_from_furnace": "检索矿物",
   "com.sxtkl.easycolony.state.retrieving_used_fuel_from_furnace": "检索燃料",
   "com.sxtkl.easycolony.state.add_fuel_to_furnace": "为熔炉添加燃料",
