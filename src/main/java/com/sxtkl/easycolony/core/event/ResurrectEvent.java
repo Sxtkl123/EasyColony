@@ -34,6 +34,7 @@ public class ResurrectEvent {
 
     @SubscribeEvent
     public static void onPlayerInteract$RightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
+        if (event.isCanceled()) return;
         if (!Config.allowResurrect) return;
 
         Level level = event.getLevel();

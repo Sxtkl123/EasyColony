@@ -17,7 +17,8 @@ import net.minecraftforge.fml.common.Mod;
 public class ReadMindEvent {
 
     @SubscribeEvent
-    public static void onPlayerInteract$RightClickBlock(final PlayerInteractEvent.EntityInteract event) {
+    public static void onPlayerInteract$EntityInteract(final PlayerInteractEvent.EntityInteract event) {
+        if (event.isCanceled()) return;
         if (event.getItemStack().getItem() != Items.COMPASS) return;
         if (!(event.getTarget() instanceof EntityCitizen citizen)) return;
         if (event.getEntity().isShiftKeyDown()) return;
