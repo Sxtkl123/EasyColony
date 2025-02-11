@@ -10,7 +10,6 @@
     "common.minecolonies.AbstractEntityAIStructureMixin",
     "common.minecolonies.AbstractTileEntityNamedGraveMixin",
     "common.minecolonies.EntityAIStructureBuilderMixin",
-    "common.minecolonies.EntityCitizenMixin",
     "common.minecolonies.FoodUtilsMixin",
     "common.minecolonies.GraveyardManagementModuleMixin"
   ],
