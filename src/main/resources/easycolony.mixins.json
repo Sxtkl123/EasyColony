@@ -14,6 +14,7 @@
     "common.minecolonies.GraveyardManagementModuleMixin"
   ],
   "client": [
+    "common.minecolonies.WindowPostBoxMixin"
   ],
   "injectors": {
     "defaultRequire": 1

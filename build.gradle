@@ -87,6 +87,9 @@ repositories {
         name = 'MineColonies'
         url = 'https://ldtteam.jfrog.io/ldtteam/modding'
     }
+    flatDir {
+        dir 'libs'
+    }
 }
 
 dependencies {
@@ -98,6 +101,8 @@ dependencies {
     implementation fg.deobf("com.ldtteam:multipiston:${multipiston_version}")
     implementation fg.deobf("com.ldtteam:domum_ornamentum:${domumornamentum_version}:universal")
     implementation fg.deobf("com.ldtteam:blockui:${blockui_version}")
+
+    implementation fg.deobf("blank:jecharacters-1.20.1:4.4.1")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 

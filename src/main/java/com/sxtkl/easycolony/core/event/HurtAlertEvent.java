@@ -5,6 +5,8 @@ import com.minecolonies.api.util.MessageUtils;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 import com.sxtkl.easycolony.Config;
 import com.sxtkl.easycolony.Easycolony;
+import com.sxtkl.easycolony.core.manager.LinkageManager;
+import me.towdium.jecharacters.JustEnoughCharacters;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -43,6 +45,9 @@ public class HurtAlertEvent {
         IColony colony = citizen.getCitizenColonyHandler().getColonyOrRegister();
         if (colony == null) return;
         MessageUtils.forCitizen(citizen, message).withPriority(MessageUtils.MessagePriority.IMPORTANT).sendTo(colony.getImportantMessageEntityPlayers());
+        if (LinkageManager.useJEAMatch) {
+            JustEnoughCharacters.logger.info("This is test message.");
+        }
     }
 
 }
