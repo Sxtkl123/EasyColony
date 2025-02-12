@@ -1,4 +1,4 @@
-package com.sxtkl.easycolony.mixin.accsessor.minecolonies;
+package com.sxtkl.easycolony.mixin.accessor.minecolonies;
 
 import com.minecolonies.core.colony.buildings.modules.GraveyardManagementModule;
 import org.spongepowered.asm.mixin.Mixin;

@@ -13,7 +13,6 @@ import com.sxtkl.easycolony.extension.IGraveDataExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.checkerframework.checker.i18n.qual.LocalizableKey;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

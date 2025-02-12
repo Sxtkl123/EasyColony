@@ -1,6 +1,9 @@
 package com.sxtkl.easycolony.core.event;
 
-import com.minecolonies.api.colony.*;
+import com.minecolonies.api.colony.ICitizenData;
+import com.minecolonies.api.colony.IColony;
+import com.minecolonies.api.colony.IColonyManager;
+import com.minecolonies.api.colony.IGraveData;
 import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.tileentities.AbstractTileEntityGrave;
 import com.minecolonies.api.tileentities.AbstractTileEntityNamedGrave;
@@ -9,7 +12,7 @@ import com.minecolonies.core.colony.buildings.workerbuildings.BuildingGraveyard;
 import com.sxtkl.easycolony.Config;
 import com.sxtkl.easycolony.Easycolony;
 import com.sxtkl.easycolony.extension.IGraveDataExtension;
-import com.sxtkl.easycolony.mixin.accsessor.minecolonies.GraveyardManagementModuleAccessor;
+import com.sxtkl.easycolony.mixin.accessor.minecolonies.GraveyardManagementModuleAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

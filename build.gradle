@@ -102,7 +102,7 @@ dependencies {
     implementation fg.deobf("com.ldtteam:domum_ornamentum:${domumornamentum_version}:universal")
     implementation fg.deobf("com.ldtteam:blockui:${blockui_version}")
 
-    implementation fg.deobf("blank:jecharacters-1.20.1:4.4.1")
+    implementation fg.deobf("blank:jecharacters-1.20.1:4.4.2")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 

@@ -13,7 +13,6 @@ public class LinkageEvent {
     @SubscribeEvent
     public static void fmlCommonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            Easycolony.LOGGER.info("{}", ModList.get().isLoaded("jecharacters"));
            if (ModList.get().isLoaded("jecharacters")) {
                LinkageManager.setup();
            }
