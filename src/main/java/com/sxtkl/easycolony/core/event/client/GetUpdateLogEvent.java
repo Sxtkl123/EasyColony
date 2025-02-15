@@ -101,7 +101,7 @@ public class GetUpdateLogEvent {
         String message = getLocalizedMessage(content);
         if (message == null) return;
 
-        sendClientMessage(player, message);
+        sendClientMessage(player, message, latestVersion);
     }
 
     private static boolean isValidResponse(JsonObject json) {
@@ -131,10 +131,10 @@ public class GetUpdateLogEvent {
         return Minecraft.getInstance().getLanguageManager().getSelected();
     }
 
-    private static void sendClientMessage(Player player, String message) {
+    private static void sendClientMessage(Player player, String message, String version) {
         Minecraft.getInstance().execute(() -> {
             if (player.isAlive()) {
-                Component updateMessage = Component.translatable("com.sxtkl.easycolony.event.update_log.latest").withStyle(ChatFormatting.GREEN);
+                Component updateMessage = Component.translatable("com.sxtkl.easycolony.event.update_log.latest", version).withStyle(ChatFormatting.GREEN);
                 player.sendSystemMessage(updateMessage);
                 Component updateContent = Component.literal(message).withStyle(ChatFormatting.WHITE);
                 player.sendSystemMessage(updateContent);

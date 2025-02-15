@@ -11,7 +11,7 @@
   "com.sxtkl.easycolony.event.resurrect.fail2": "%s 的灵魂没有回应...",
   "com.sxtkl.easycolony.event.resurrect.fail3": "%s 想要就此长眠。",
   "com.sxtkl.easycolony.event.readmind.message": "这个市民现在正在：",
-  "com.sxtkl.easycolony.event.update_log.latest": "Easycolony 发现最新版本！更新日志如下：",
+  "com.sxtkl.easycolony.event.update_log.latest": "Easycolony 发现最新版本 %d！更新日志如下：",
   "com.sxtkl.easycolony.state.idle": "闲置",
   "com.sxtkl.easycolony.state.init": "初始化",
   "com.sxtkl.easycolony.state.inventory_full": "清空背包",
