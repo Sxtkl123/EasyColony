@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 public class GetUpdateLogEvent {
     private static final String UPDATE_URL = "https://sxtkl123.github.io/EasyColony/latest.json";
     private static final int HTTP_TIMEOUT_MS = 5000;
-    private static final String FALLBACK_LANGUAGE = "zh_cn";
+    private static final String FALLBACK_LANGUAGE = "en_us";
 
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
