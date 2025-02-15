@@ -1,4 +1,4 @@
-package com.sxtkl.easycolony.core.event;
+package com.sxtkl.easycolony.core.event.common;
 
 import com.minecolonies.api.entity.ai.ITickingStateAI;
 import com.minecolonies.api.entity.ai.statemachine.states.IState;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 public class ReadMindEvent {
 
     @SubscribeEvent
-    public static void onPlayerInteract$EntityInteract(final PlayerInteractEvent.EntityInteract event) {
+    public static void onEntityInteract(final PlayerInteractEvent.EntityInteract event) {
         if (event.isCanceled()) return;
         if (!Config.allowReadMind) return;
         if (event.getItemStack().getItem() != Config.readMindItem) return;

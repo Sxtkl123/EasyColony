@@ -1,4 +1,4 @@
-package com.sxtkl.easycolony.core.event;
+package com.sxtkl.easycolony.core.event.common;
 
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.IColony;
@@ -36,7 +36,7 @@ import java.util.Map;
 public class ResurrectEvent {
 
     @SubscribeEvent
-    public static void onPlayerInteract$RightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
+    public static void onRightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
         if (event.isCanceled()) return;
         if (!Config.allowResurrect) return;
 

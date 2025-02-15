@@ -1,4 +1,4 @@
-package com.sxtkl.easycolony.core.event;
+package com.sxtkl.easycolony.core.event.common;
 
 import com.sxtkl.easycolony.Easycolony;
 import com.sxtkl.easycolony.core.manager.LinkageManager;
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public class LinkageEvent {
 
     @SubscribeEvent
-    public static void fmlCommonSetup(FMLCommonSetupEvent event) {
+    public static void onFMLCommonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
            if (ModList.get().isLoaded("jecharacters")) {
                LinkageManager.setup();

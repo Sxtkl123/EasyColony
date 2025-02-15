@@ -1,4 +1,4 @@
-package com.sxtkl.easycolony.core.event;
+package com.sxtkl.easycolony.core.event.common;
 
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.util.MessageUtils;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 public class HurtAlertEvent {
 
     @SubscribeEvent
-    public static void LivingHurt(final LivingHurtEvent event) {
+    public static void onLivingHurt(final LivingHurtEvent event) {
         if (event.isCanceled()) return;
         if (!Config.allowHurtAlert) return;
         if (event.getSource().getEntity() instanceof EntityCitizen) return;
