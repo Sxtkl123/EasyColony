@@ -10,7 +10,10 @@ import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = EntityAIStructureBuilder.class, remap = false)
 public abstract class EntityAIStructureBuilderMixin extends AbstractEntityAIStructureWithWorkOrder<JobBuilder, BuildingBuilder> {
@@ -26,5 +29,13 @@ public abstract class EntityAIStructureBuilderMixin extends AbstractEntityAIStru
         if (!Config.easyBuilderAI) return currentBlock;
         final IWorkOrder wo = job.getWorkOrder();
         return wo.getLocation();
+    }
+
+    @Inject(method = "walkToConstructionSite", at = @At("RETURN"), slice = @Slice(
+            from = @At(value = "INVOKE", target = "Lcom/minecolonies/core/entity/ai/workers/builder/EntityAIStructureBuilder;walkToSafePos(Lnet/minecraft/core/BlockPos;)Z"),
+            to = @At(value = "INVOKE", target = "Lcom/minecolonies/api/util/BlockPosUtil;getDistance2D(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)J")
+    ))
+    public void walkToConstructionSite(BlockPos currentBlock, CallbackInfoReturnable<Boolean> cir) {
+        this.workFrom = null;
     }
 }

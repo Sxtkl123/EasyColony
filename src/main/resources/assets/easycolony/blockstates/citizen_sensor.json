@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "easycolony:block/citizen_sensor"
+    }
+  }
+}
