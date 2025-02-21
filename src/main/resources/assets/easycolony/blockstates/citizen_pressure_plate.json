@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "powered=false": {
-      "model": "easycolony:citizen_pressure_plate"
-    }
-  }
-}
