@@ -145,5 +145,6 @@
   "com.sxtkl.easycolony.state.sleeping": "睡觉",
   "com.sxtkl.easycolony.state.mourn": "哀悼",
   "com.sxtkl.easycolony.state.walking_home": "走回家",
-  "com.sxtkl.easycolony.state.find_bed": "找床"
+  "com.sxtkl.easycolony.state.find_bed": "找床",
+  "com.sxtkl.easycolony.creativetab.common": "Easycolony"
 }
