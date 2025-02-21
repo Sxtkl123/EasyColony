@@ -1,4 +1,5 @@
 {
+  "block.easycolony.citizen_sensor": "市民传感器",
   "com.sxtkl.easycolony.colony.hurt.message": "我被 %s 锤了！速来（X = %d, Y = %d, Z = %d）救架！",
   "com.sxtkl.easycolony.event.resurrect.no_grave_data": "这个墓碑似乎没有寄宿着亡魂...",
   "com.sxtkl.easycolony.event.resurrect.no_colony": "这个亡魂似乎迷失了方向...",
