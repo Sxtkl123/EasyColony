@@ -5,6 +5,7 @@ import com.minecolonies.core.colony.buildings.workerbuildings.BuildingBuilder;
 import com.minecolonies.core.colony.jobs.JobBuilder;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIStructureWithWorkOrder;
 import com.minecolonies.core.entity.ai.workers.builder.EntityAIStructureBuilder;
+import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedPathNavigate;
 import com.sxtkl.easycolony.Config;
 import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +37,11 @@ public abstract class EntityAIStructureBuilderMixin extends AbstractEntityAIStru
             to = @At(value = "INVOKE", target = "Lcom/minecolonies/api/util/BlockPosUtil;getDistance2D(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)J")
     ))
     public void walkToConstructionSite(BlockPos currentBlock, CallbackInfoReturnable<Boolean> cir) {
-        this.workFrom = null;
+        if (!Config.easyBuilderAI) return;
+        final MinecoloniesAdvancedPathNavigate nav = ((MinecoloniesAdvancedPathNavigate) this.worker.getNavigation());
+        boolean walking = nav.getPathResult() != null;
+        if (!walking) {
+            this.workFrom = null;
+        }
     }
 }

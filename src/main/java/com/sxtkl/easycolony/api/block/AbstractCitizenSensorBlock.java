@@ -1,35 +1,57 @@
 package com.sxtkl.easycolony.api.block;
 
+import com.ldtteam.structurize.items.ModItems;
+import com.minecolonies.core.entity.citizen.EntityCitizen;
 import com.sxtkl.easycolony.Easycolony;
+import com.sxtkl.easycolony.extension.ISilenceExtension;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("deprecation")
-public abstract class AbstractCitizenSensorBlock extends Block {
+import java.util.List;
+
+@SuppressWarnings({"NullableProblems", "deprecation"})
+public abstract class AbstractCitizenSensorBlock extends PressurePlateBlock implements ISilenceExtension {
+
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     private static final String NAME = "citizen_sensor";
 
-    private boolean powered;
-
     public AbstractCitizenSensorBlock() {
-        super(Properties.copy(Blocks.OAK_PLANKS).noOcclusion().noCollission());
-        this.powered = false;
+        super(Sensitivity.MOBS,
+                Properties.copy(Blocks.OAK_PLANKS).noOcclusion().noCollission()
+                .isViewBlocking((a, b, c) -> false)
+                .isSuffocating((a, b, c) -> false)
+                .isValidSpawn((a, b, c, d) -> false),
+                BlockSetType.OAK);
+        this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
     }
 
     public AbstractCitizenSensorBlock registerBlock(final IForgeRegistry<Block> registry) {
@@ -42,45 +64,61 @@ public abstract class AbstractCitizenSensorBlock extends Block {
     }
 
     @Override
-    public void entityInside(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Entity pEntity) {
-        if (pLevel.isClientSide) {
-            return;
+    protected int getSignalStrength(@NotNull Level pLevel, @NotNull BlockPos pPos) {
+        net.minecraft.world.phys.AABB move = TOUCH_AABB.move(pPos);
+        List<EntityCitizen> entities = pLevel.getEntitiesOfClass(EntityCitizen.class, move);
+        List<Player> players = pLevel.getEntitiesOfClass(Player.class, move);
+        if (entities.isEmpty() && players.isEmpty()) return 0;
+        for (EntityCitizen entity : entities) {
+            if(!entity.isIgnoringBlockTriggers()) {
+                return 15;
+            }
         }
-        this.powered = true;
-        pLevel.setBlock(pPos, pState, 2);
-        pLevel.scheduleTick(new BlockPos(pPos), this, 100);
+        for (Player player : players) {
+            if (!player.isIgnoringBlockTriggers()) {
+                return 15;
+            }
+        }
+
+        return 0;
     }
 
     @Override
-    public void tick(@NotNull BlockState pState, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
-        Easycolony.LOGGER.info("tick");
-        this.powered = false;
-    }
-
-    private void checkPressed(Entity pEntity, Level pLevel, BlockPos pPos, BlockState pState, boolean last) {
-        boolean tempPowered = powered;
-        if (powered != last) {
-            powered = last;
-        }
-
-        if (!tempPowered && last) {
-            Easycolony.LOGGER.info("up");
-        } else if (tempPowered && !last) {
-            Easycolony.LOGGER.info("down");
-        }
-
-        if (tempPowered) {
-            pLevel.scheduleTick(new BlockPos(pPos), this, 20);
-        }
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        return shouldShow() ? Shapes.block() : Shapes.empty();
     }
 
     @Override
-    public int getSignal(BlockState pState, BlockGetter pLevel, BlockPos pPos, Direction pDirection) {
-        return this.powered ? 15 : 0;
+    public RenderShape getRenderShape(BlockState pState) {
+        return shouldShow() ? RenderShape.MODEL : RenderShape.INVISIBLE;
     }
 
-    @Override
-    public boolean isSignalSource(BlockState pState) {
+    public boolean propagatesSkylightDown(BlockState pState, BlockGetter pReader, BlockPos pPos) {
         return true;
+    }
+
+    public float getShadeBrightness(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+        return 1.0F;
+    }
+
+    @Override
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        return true;
+    }
+
+    @Override
+    public boolean getSilence() {
+        return true;
+    }
+
+    private static boolean shouldShow() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) {
+            return true;
+        }
+        Item mainHandItem = mc.player.getItemInHand(InteractionHand.MAIN_HAND).getItem();
+        Item offHandItem = mc.player.getItemInHand(InteractionHand.OFF_HAND).getItem();
+        if (mainHandItem == ModItems.buildTool.get() || offHandItem == ModItems.buildTool.get()) return true;
+        return mainHandItem == ModBlocks.citizenSensorBlock.asItem() || offHandItem == ModBlocks.citizenSensorBlock.asItem();
     }
 }
