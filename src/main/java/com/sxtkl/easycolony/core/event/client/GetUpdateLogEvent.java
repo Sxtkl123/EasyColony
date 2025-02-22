@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 
 @Mod.EventBusSubscriber(modid = Easycolony.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -83,7 +84,7 @@ public class GetUpdateLogEvent {
     }
 
     private static JsonObject parseResponse(HttpURLConnection connection) throws IOException {
-        try (InputStreamReader reader = new InputStreamReader(connection.getInputStream())) {
+        try (InputStreamReader reader = new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)) {
             return JsonParser.parseReader(reader).getAsJsonObject();
         } catch (JsonSyntaxException e) {
             Easycolony.LOGGER.error("[Update Check] Invalid JSON response", e);
