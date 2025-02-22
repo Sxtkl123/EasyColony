@@ -16,6 +16,8 @@
     "common.minecraft.BasePressurePlateBlockMixin"
   ],
   "client": [
+    "client.minecolonies.ItemListModuleWindowMixin",
+    "client.minecolonies.RestaurantMenuModuleWindowMixin",
     "client.minecolonies.WindowHutAllInventoryMixin",
     "client.minecolonies.WindowPostBoxMixin",
     "client.minecolonies.WindowSelectResMixin",
