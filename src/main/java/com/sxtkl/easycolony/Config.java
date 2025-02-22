@@ -59,6 +59,10 @@ public class Config {
 
     private static final ForgeConfigSpec.ConfigValue<String> READ_MIND_ITEM;
 
+    private static final ForgeConfigSpec.BooleanValue USE_MAX_STOCK_AS_DEFAULT;
+
+    private static final ForgeConfigSpec.BooleanValue ALLOW_TOGGLE_RECIPE_MODE_AS_DEFAULT;
+
     static {
         BUILDER.push("通用配置");
         EASY_PICK_MATERIAL_AI = BUILDER.comment("简易化材料寻找AI：工人在架子上找原材料时，将直接在对应的小屋方块建筑进行。")
@@ -67,6 +71,10 @@ public class Config {
                 .defineInRange("not_colony_food_penalty_multiplier", 1.0, 0, Integer.MAX_VALUE);
         ALLOW_HURT_ALERT = BUILDER.comment("受击提示：是否允许非警卫市民受到攻击后发出警报。")
                 .define("allow_hurt_alert", true);
+        ALLOW_TOGGLE_RECIPE_MODE_AS_DEFAULT = BUILDER.comment("允许默认开启配方模式：开启后将不需要在大学研究也可以直接解锁小屋配方模式的切换。")
+                .define("allow_recipe_mode_as_default", true);
+        USE_MAX_STOCK_AS_DEFAULT = BUILDER.comment("默认使用库存模式：开启后将默认使用库存模式作为小屋的合成模式，对于已经放置的小屋不奏效。")
+                .define("use_max_stock_as_default", true);
         BUILDER.pop();
 
         BUILDER.push("建筑工人配置");
@@ -123,6 +131,10 @@ public class Config {
 
     public static Item readMindItem;
 
+    public static boolean useMaxStockAsDefault;
+
+    public static boolean allowToggleRecipeModeAsDefault;
+
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
         easyBuilderAI = EASY_BUILDER_AI.get();
@@ -137,5 +149,7 @@ public class Config {
         allowHurtAlert = ALLOW_HURT_ALERT.get();
         allowReadMind = ALLOW_READ_MIND.get();
         readMindItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(READ_MIND_ITEM.get()));
+        useMaxStockAsDefault = USE_MAX_STOCK_AS_DEFAULT.get();
+        allowToggleRecipeModeAsDefault = ALLOW_TOGGLE_RECIPE_MODE_AS_DEFAULT.get();
     }
 }
