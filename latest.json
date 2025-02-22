@@ -1,7 +1,7 @@
 {
   "version": "1.1.3",
   "content": {
-    "zh_cn": "1. 优化了AI取货时的性能。\n2. 添加了更新日志的联网获取（你现在看到的就是啦！）。\n3. 修复了部分情况下建筑工会建筑非常慢的bug（当然只是修复了一种该漏洞的触发形式，不排除还有另外触发形式的可能性）。\n4. 当然这份日志只是当前 1.1.3 版本的日志，用于测试联网获取更新日志功能，该日志将在 2025.2.20 日取消。",
+    "zh_cn": "1. 添加了针对合成模式的配置，现在可以手动配置默认合成模式了。\n2. 现在可以通过配置，在没有大学解锁相关科技时改变合成模式了。\n3. 添加了市民传感器，通过建筑工具和一个任意木制压力板合成，只有手持建筑工具或市民传感器时才会显示，当市民经过传感器时，会发出红石信号。\n4. 为厨房添加了拼音检索的支持。",
     "en_us": "(This log is for testing the online update log retrieval feature and will be removed on February 20, 2025)\n1. Optimized performance during AI item collection operations.\n2. Added online retrieval of update logs (which is exactly what you're seeing now!).\n3. Fixed a bug where construction workers built extremely slowly under certain conditions\n(Note: This addresses one specific trigger scenario; other potential triggers may still exist).\n Translated By DeepSeek."
   }
 }
