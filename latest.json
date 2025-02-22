@@ -2,6 +2,6 @@
   "version": "1.1.4",
   "content": {
     "zh_cn": "1. 添加了针对合成模式的配置，现在可以手动配置默认合成模式了。\n2. 现在可以通过配置，在没有大学解锁相关科技时改变合成模式了。\n3. 添加了市民传感器，通过建筑工具和一个任意木制压力板合成，只有手持建筑工具或市民传感器时才会显示，当市民经过传感器时，会发出红石信号。\n4. 为厨房添加了拼音检索的支持。",
-    "en_us": "(This log is for testing the online update log retrieval feature and will be removed on February 20, 2025)\n1. Optimized performance during AI item collection operations.\n2. Added online retrieval of update logs (which is exactly what you're seeing now!).\n3. Fixed a bug where construction workers built extremely slowly under certain conditions\n(Note: This addresses one specific trigger scenario; other potential triggers may still exist).\n Translated By DeepSeek."
+    "en_us": "1. Maintained \"crafting mode\" terminology from previous config translations\n\n2. Used \"university-researched technologies\" for tech context\n\n3. Capitalized Redstone signal following Minecraft convention\n\n4. Kept \"Builder's Tool\" naming consistency from previous feature descriptions\n\n5. Structured sensor details as bullet points for technical clarity\n Translated By DeepSeek."
   }
 }
