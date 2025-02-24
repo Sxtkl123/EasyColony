@@ -146,5 +146,6 @@
   "com.sxtkl.easycolony.state.mourn": "Mourning",
   "com.sxtkl.easycolony.state.walking_home": "Walking to home",
   "com.sxtkl.easycolony.state.find_bed": "Finding bed",
-  "com.sxtkl.easycolony.creativetab.common": "简易殖民地"
+  "com.sxtkl.easycolony.creativetab.common": "Easy Colony",
+  "com.sxtkl.easycolony.gui.builder.consume_stats": "Consumption Statistics: "
 }
