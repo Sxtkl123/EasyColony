@@ -47,7 +47,7 @@ public class ConsumeStatsModuleWindow extends AbstractModuleWindow {
             @Override
             public void updateElement(final int index, @NotNull final Pane rowPane) {
                 final ItemStack resource = moduleView.getConsume().get(index).getA().getItemStack().copy();
-                resource.setCount(index);
+                resource.setCount(1);
 
                 rowPane.findPaneOfTypeByID(RESOURCE_NAME, Text.class).setText(resource.getHoverName());
                 rowPane.findPaneOfTypeByID(QUANTITY_LABEL, Text.class).setText(Component.literal(String.valueOf(moduleView.getConsume().get(index).getB())));

@@ -12,6 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ConsumeStatsModuleView extends AbstractBuildingModuleView implements IConsumeStatsModuleView {
@@ -29,7 +30,7 @@ public class ConsumeStatsModuleView extends AbstractBuildingModuleView implement
 
     @Override
     public List<Tuple<ItemStorage, Integer>> getConsume() {
-        return consume;
+        return consume.stream().sorted(Comparator.comparing((tuple -> tuple.getB() == null ? 0 : tuple.getB()), Comparator.reverseOrder())).toList();
     }
 
     @Override

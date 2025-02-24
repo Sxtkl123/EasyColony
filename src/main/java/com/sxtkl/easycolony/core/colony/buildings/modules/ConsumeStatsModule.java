@@ -23,6 +23,9 @@ public class ConsumeStatsModule extends AbstractBuildingModule implements IConsu
 
     @Override
     public void increase(ItemStack itemStack) {
+        if (itemStack.isEmpty()) {
+            return;
+        }
         ItemStorage key = new ItemStorage(itemStack);
         consume.put(key, consume.getOrDefault(new ItemStorage(itemStack), 0) + 1);
     }

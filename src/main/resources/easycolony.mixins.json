@@ -9,6 +9,7 @@
     "common.minecolonies.AbstractEntityAIBasicMixin",
     "common.minecolonies.AbstractEntityAIStructureMixin",
     "common.minecolonies.AbstractTileEntityNamedGraveMixin",
+    "common.minecolonies.BuildingStructureHandlerMixin",
     "common.minecolonies.CrafterRecipeSettingMixin",
     "common.minecolonies.EntityAIStructureBuilderMixin",
     "common.minecolonies.FoodUtilsMixin",
