@@ -8,7 +8,7 @@
                <label id="resourceName" size="90 12" pos="20 1" color="black"/>
                <label id="resourceQty" size="12 12" pos="115 1" color="black"/>
 
-               <buttonimage label="X" id="removeStock" pos="130 1" size="29 15"
+               <buttonimage label="X" id="removeConsume" pos="130 1" size="29 15"
                             source="minecolonies:textures/gui/builderhut/builder_button_very_small.png" textcolor="red"/>
           </box>
      </list>

@@ -14,10 +14,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConsumeStatsModuleView extends AbstractBuildingModuleView implements IConsumeStatsModuleView {
 
-    private final List<Tuple<ItemStorage, Integer>> consume = new ArrayList<>();
+    private List<Tuple<ItemStorage, Integer>> consume = new ArrayList<>();
 
     @Override
     public void deserialize(@NotNull FriendlyByteBuf buf) {
@@ -26,11 +27,12 @@ public class ConsumeStatsModuleView extends AbstractBuildingModuleView implement
         for (int i = 0; i < size; i++) {
             consume.add(new Tuple<>(new ItemStorage(buf.readItem()), buf.readInt()));
         }
+        consume = consume.stream().sorted(Comparator.comparing((tuple -> tuple.getB() == null ? 0 : tuple.getB()), Comparator.reverseOrder())).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
     public List<Tuple<ItemStorage, Integer>> getConsume() {
-        return consume.stream().sorted(Comparator.comparing((tuple -> tuple.getB() == null ? 0 : tuple.getB()), Comparator.reverseOrder())).toList();
+        return consume;
     }
 
     @Override

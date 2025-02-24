@@ -36,6 +36,14 @@ public class ConsumeStatsModule extends AbstractBuildingModule implements IConsu
     }
 
     @Override
+    public void remove(ItemStack itemStack) {
+        if (itemStack.isEmpty()) {
+            return;
+        }
+        consume.remove(new ItemStorage(itemStack));
+    }
+
+    @Override
     public void serializeNBT(CompoundTag compound) {
         final ListTag consumeTagList = new ListTag();
         for (final Map.Entry<ItemStorage, Integer> entry : consume.entrySet()) {

@@ -42,12 +42,10 @@ public abstract class BuildingStructureHandlerMixin {
         if (colonyJob == null) {
             return;
         }
-
-        ConsumeStatsModule module = colonyJob.getWorkBuilding().getModule(BuildingModules.CONSUME_STATS);
-        if (module == null) {
+        if (!colonyJob.getWorkBuilding().hasModule(BuildingModules.CONSUME_STATS)) {
             return;
         }
-        module.increase(itemStack);
+        colonyJob.getWorkBuilding().getModule(BuildingModules.CONSUME_STATS).increase(itemStack);
     }
 
 }

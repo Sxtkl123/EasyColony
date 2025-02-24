@@ -12,4 +12,6 @@ public interface IConsumeStatsModule extends IBuildingModule {
 
     void clear();
 
+    void remove(final ItemStack itemStack);
+
 }
