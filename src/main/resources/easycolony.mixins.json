@@ -6,6 +6,7 @@
   "refmap": "easycolony.refmap.json",
   "mixins": [
     "accessor.minecolonies.GraveyardManagementModuleAccessor",
+    "accessor.minecolonies.MinimumStockModuleAccessor",
     "common.minecolonies.AbstractEntityAIBasicMixin",
     "common.minecolonies.AbstractEntityAIStructureMixin",
     "common.minecolonies.AbstractTileEntityNamedGraveMixin",

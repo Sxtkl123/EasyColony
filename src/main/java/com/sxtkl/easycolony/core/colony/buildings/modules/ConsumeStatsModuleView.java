@@ -20,6 +20,8 @@ public class ConsumeStatsModuleView extends AbstractBuildingModuleView implement
 
     private List<Tuple<ItemStorage, Integer>> consume = new ArrayList<>();
 
+    private boolean canAddStock;
+
     @Override
     public void deserialize(@NotNull FriendlyByteBuf buf) {
         consume.clear();
@@ -27,12 +29,18 @@ public class ConsumeStatsModuleView extends AbstractBuildingModuleView implement
         for (int i = 0; i < size; i++) {
             consume.add(new Tuple<>(new ItemStorage(buf.readItem()), buf.readInt()));
         }
+        canAddStock = buf.readBoolean();
         consume = consume.stream().sorted(Comparator.comparing((tuple -> tuple.getB() == null ? 0 : tuple.getB()), Comparator.reverseOrder())).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
     public List<Tuple<ItemStorage, Integer>> getConsume() {
         return consume;
+    }
+
+    @Override
+    public boolean canAddStock() {
+        return canAddStock;
     }
 
     @Override

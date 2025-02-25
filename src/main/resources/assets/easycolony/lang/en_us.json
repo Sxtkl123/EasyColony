@@ -147,5 +147,9 @@
   "com.sxtkl.easycolony.state.walking_home": "Walking to home",
   "com.sxtkl.easycolony.state.find_bed": "Finding bed",
   "com.sxtkl.easycolony.creativetab.common": "Easy Colony",
-  "com.sxtkl.easycolony.gui.builder.consume_stats": "Consumption Statistics: "
+  "com.sxtkl.easycolony.gui.builder.consume_stats": "Consumption Statistics: ",
+  "com.sxtkl.easycolony.gui.builder.stock": "Stock",
+  "com.sxtkl.easycolony.gui.builder.clear": "Clear",
+  "com.sxtkl.easycolony.gui.builder.stock_qty": "Please enter the quantity of stock.",
+  "com.sxtkl.easycolony.gui.builder.reach_limit": "Reach Limit"
 }

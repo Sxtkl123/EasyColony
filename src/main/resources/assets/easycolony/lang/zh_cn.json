@@ -147,5 +147,9 @@
   "com.sxtkl.easycolony.state.walking_home": "走回家",
   "com.sxtkl.easycolony.state.find_bed": "找床",
   "com.sxtkl.easycolony.creativetab.common": "Easycolony",
-  "com.sxtkl.easycolony.gui.builder.consume_stats": "消耗统计："
+  "com.sxtkl.easycolony.gui.builder.consume_stats": "消耗统计：",
+  "com.sxtkl.easycolony.gui.builder.stock": "添加库存",
+  "com.sxtkl.easycolony.gui.builder.clear": "清空统计",
+  "com.sxtkl.easycolony.gui.builder.stock_qty": "请输入添加最低库存时的物品组数。",
+  "com.sxtkl.easycolony.gui.builder.reach_limit": "已达上限"
 }

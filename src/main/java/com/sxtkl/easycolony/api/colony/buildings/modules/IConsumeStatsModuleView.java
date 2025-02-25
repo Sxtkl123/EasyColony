@@ -13,4 +13,6 @@ public interface IConsumeStatsModuleView extends IBuildingModuleView {
 
     List<Tuple<ItemStorage, Integer>> getConsume();
 
+    boolean canAddStock();
+
 }

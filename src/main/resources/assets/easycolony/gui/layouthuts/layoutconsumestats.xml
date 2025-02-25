@@ -2,14 +2,21 @@
      <image source="minecolonies:textures/gui/builderhut/builder_paper.png" size="190 244"/>
      <label size="130 11" pos="30 14" textalign="MIDDLE" color="black"
             label="$(com.sxtkl.easycolony.gui.builder.consume_stats)"/>
-     <list id="resources_consumed" size="170 180" pos="13 50">
+     <list id="resources_consumed" size="170 180" pos="13 30">
           <box size="100% 17" linewidth="1">
                <itemicon id="resourceIcon" size="17 17" pos="0 0"/>
-               <label id="resourceName" size="90 12" pos="20 1" color="black"/>
-               <label id="resourceQty" size="12 12" pos="115 1" color="black"/>
+               <label id="resourceName" size="60 12" pos="20 1" color="black"/>
+               <label id="resourceQty" size="12 12" pos="80 1" color="black"/>
 
-               <buttonimage label="X" id="removeConsume" pos="130 1" size="29 15"
-                            source="minecolonies:textures/gui/builderhut/builder_button_very_small.png" textcolor="red"/>
+               <buttonimage label="$(com.sxtkl.easycolony.gui.builder.stock)" id="addStock" pos="100 1" size="44 16"
+                            source="minecolonies:textures/gui/builderhut/builder_button_quite_small.png" textcolor="black"/>
+               <buttonimage label="X" id="removeConsume" pos="145 1" size="14 15"
+                            source="minecolonies:textures/gui/builderhut/builder_button_mini.png" textcolor="red"/>
           </box>
      </list>
+     <input id="stockQty" pos="15 215" size="50 17" textalign="MIDDLE"
+            source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
+            tooltip="$(com.sxtkl.easycolony.gui.builder.stock_qty)"/>
+     <buttonimage label="$(com.sxtkl.easycolony.gui.builder.clear)" id="clearConsume" pos="82 215" size="86 17" textalign="MIDDLE"
+                  source="minecolonies:textures/gui/builderhut/builder_button_medium.png" textcolor="black"/>
 </window>

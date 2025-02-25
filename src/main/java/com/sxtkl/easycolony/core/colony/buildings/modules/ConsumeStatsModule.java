@@ -3,7 +3,9 @@ package com.sxtkl.easycolony.core.colony.buildings.modules;
 import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IPersistentModule;
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 import com.sxtkl.easycolony.api.colony.buildings.modules.IConsumeStatsModule;
+import com.sxtkl.easycolony.mixin.accessor.minecolonies.MinimumStockModuleAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -44,6 +46,15 @@ public class ConsumeStatsModule extends AbstractBuildingModule implements IConsu
     }
 
     @Override
+    public void addStock(ItemStack itemStack, int count) {
+        // TODO: 实现添加库存的功能，默认添加 1组 就行了
+        if (!building.hasModule(BuildingModules.MIN_STOCK)) {
+            return;
+        }
+
+    }
+
+    @Override
     public void serializeNBT(CompoundTag compound) {
         final ListTag consumeTagList = new ListTag();
         for (final Map.Entry<ItemStorage, Integer> entry : consume.entrySet()) {
@@ -72,5 +83,10 @@ public class ConsumeStatsModule extends AbstractBuildingModule implements IConsu
             buf.writeItem(entry.getKey().getItemStack());
             buf.writeInt(entry.getValue());
         }
+        if (!building.hasModule(BuildingModules.MIN_STOCK)) {
+            return;
+        }
+        MinimumStockModuleAccessor module = (MinimumStockModuleAccessor) building.getModule(BuildingModules.MIN_STOCK);
+        buf.writeBoolean(module.getMinimumStock().size() < module.invokeMinimumStockSize());
     }
 }
