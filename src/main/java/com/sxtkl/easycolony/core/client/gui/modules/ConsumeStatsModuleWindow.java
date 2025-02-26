@@ -5,7 +5,6 @@ import com.ldtteam.blockui.controls.*;
 import com.ldtteam.blockui.views.ScrollingList;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.crafting.ItemStorage;
-import com.minecolonies.api.util.Log;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.core.Network;
