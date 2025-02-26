@@ -1,17 +1,16 @@
 package com.sxtkl.easycolony.core.client.gui.modules;
 
 import com.ldtteam.blockui.Pane;
-import com.ldtteam.blockui.controls.Button;
-import com.ldtteam.blockui.controls.ButtonImage;
-import com.ldtteam.blockui.controls.ItemIcon;
-import com.ldtteam.blockui.controls.Text;
+import com.ldtteam.blockui.controls.*;
 import com.ldtteam.blockui.views.ScrollingList;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.api.util.Log;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.client.gui.AbstractModuleWindow;
+import com.minecolonies.core.network.messages.server.colony.building.AddMinimumStockToBuildingModuleMessage;
 import com.sxtkl.easycolony.Easycolony;
 import com.sxtkl.easycolony.api.colony.buildings.modules.IConsumeStatsModuleView;
 import com.sxtkl.easycolony.core.network.messages.server.colony.building.ClearConsumeStatsFromBuildingModuleMessage;
@@ -31,6 +30,7 @@ public class ConsumeStatsModuleWindow extends AbstractModuleWindow {
     private static final String REMOVE_BUTTON = "removeConsume";
     private static final String CLEAR_BUTTON = "clearConsume";
     private static final String ADD_STOCK_BUTTON = "addStock";
+    private static final String STOCK_QUANTITY_INPUT = "stockQty";
 
     private static final String LABEL_LIMIT_REACHED = "com.sxtkl.easycolony.gui.builder.reach_limit";
 
@@ -96,6 +96,15 @@ public class ConsumeStatsModuleWindow extends AbstractModuleWindow {
     }
 
     private void addStock(final Button button) {
+        final int row = resourceList.getListElementIndexByPane(button);
+        final Tuple<ItemStorage, Integer> tuple = moduleView.getConsume().get(row);
+        int qty = 1;
+        try {
+            qty = Integer.parseInt(this.findPaneOfTypeByID(STOCK_QUANTITY_INPUT, TextField.class).getText());
+        } catch (final NumberFormatException ex) {
+            Easycolony.LOGGER.warn("Invalid input in Selection BOWindow for Quantity, defaulting to 1!");
+        }
+        Network.getNetwork().sendToServer(new AddMinimumStockToBuildingModuleMessage(buildingView, tuple.getA().getItemStack(), qty));
         updateConsumedList();
     }
 }

@@ -14,6 +14,4 @@ public interface IConsumeStatsModule extends IBuildingModule {
 
     void remove(final ItemStack itemStack);
 
-    void addStock(final ItemStack itemStack, final int count);
-
 }
