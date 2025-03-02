@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "easycolony:block/resource_scroll",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "easycolony:block/resource_scroll"
+    },
+    "facing=south": {
+      "model": "easycolony:block/resource_scroll",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "easycolony:block/resource_scroll",
+      "y": 270
+    }
+  }
+}
