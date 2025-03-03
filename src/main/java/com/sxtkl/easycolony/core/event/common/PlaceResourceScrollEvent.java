@@ -54,4 +54,5 @@ public class PlaceResourceScrollEvent {
         }
     }
 
+    // TODO: 添加一个新功能，可以潜行右键直接把资源卷轴取下来，省的挖了...
 }

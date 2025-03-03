@@ -42,7 +42,7 @@ public abstract class AbstractResourceScrollBlock extends Block implements Entit
     protected static final VoxelShape NORTH_AABB = Block.box(0.0D, 0.0D, 13.0D, 16.0D, 16.0D, 16.0D);
 
     public AbstractResourceScrollBlock() {
-        super(Properties.copy(Blocks.LADDER).noCollission());
+        super(Properties.copy(Blocks.LADDER).noCollission().strength(0));
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 

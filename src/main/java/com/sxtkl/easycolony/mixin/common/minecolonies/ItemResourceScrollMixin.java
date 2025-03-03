@@ -16,7 +16,7 @@ public abstract class ItemResourceScrollMixin {
     }
 
     @Redirect(method = "useOn", at = @At(value = "INVOKE", target = "Lcom/minecolonies/core/items/ItemResourceScroll;openWindow(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/world/entity/player/Player;)V"))
-    public void useOn$openWindow(CompoundTag warehouseSnapshotCompound, Player currentHash) {
+    private void useOn$openWindow(CompoundTag warehouseSnapshotCompound, Player currentHash) {
         if (currentHash.isCrouching()) {
             return;
         }
