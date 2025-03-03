@@ -15,6 +15,7 @@
     "common.minecolonies.EntityAIStructureBuilderMixin",
     "common.minecolonies.FoodUtilsMixin",
     "common.minecolonies.GraveyardManagementModuleMixin",
+    "common.minecolonies.ItemResourceScrollMixin",
     "common.minecolonies.ModBuildingsInitializerMixin",
     "common.minecolonies.NetworkChannelMixin",
     "common.minecraft.BasePressurePlateBlockMixin"

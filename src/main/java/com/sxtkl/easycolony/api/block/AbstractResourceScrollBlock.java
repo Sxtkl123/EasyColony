@@ -4,6 +4,7 @@ import com.sxtkl.easycolony.Easycolony;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({"deprecation", "NullableProblems"})
 public abstract class AbstractResourceScrollBlock extends Block {
@@ -71,5 +73,30 @@ public abstract class AbstractResourceScrollBlock extends Block {
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(FACING);
+    }
+
+    @Override
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        if (!pContext.replacingClickedOnBlock()) {
+            BlockState blockstate = pContext.getLevel().getBlockState(pContext.getClickedPos().relative(pContext.getClickedFace().getOpposite()));
+            if (blockstate.is(this) && blockstate.getValue(FACING) == pContext.getClickedFace()) {
+                return null;
+            }
+        }
+
+        BlockState defaultState = this.defaultBlockState();
+        LevelReader levelreader = pContext.getLevel();
+        BlockPos blockpos = pContext.getClickedPos();
+
+        for(Direction direction : pContext.getNearestLookingDirections()) {
+            if (direction.getAxis().isHorizontal()) {
+                defaultState = defaultState.setValue(FACING, direction.getOpposite());
+                if (defaultState.canSurvive(levelreader, blockpos)) {
+                    return defaultState;
+                }
+            }
+        }
+
+        return null;
     }
 }
