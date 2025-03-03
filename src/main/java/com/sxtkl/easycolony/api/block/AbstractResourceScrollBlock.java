@@ -1,24 +1,38 @@
 package com.sxtkl.easycolony.api.block;
 
+import com.minecolonies.core.items.ItemResourceScroll;
 import com.sxtkl.easycolony.Easycolony;
+import com.sxtkl.easycolony.core.tileentity.TileEntityResourceScroll;
+import com.sxtkl.easycolony.mixin.accessor.minecolonies.ItemResourceScrollAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 @SuppressWarnings({"deprecation", "NullableProblems"})
-public abstract class AbstractResourceScrollBlock extends Block {
+public abstract class AbstractResourceScrollBlock extends Block implements EntityBlock {
     private static final String NAME = "resource_scroll";
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -98,5 +112,31 @@ public abstract class AbstractResourceScrollBlock extends Block {
         }
 
         return null;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new TileEntityResourceScroll(pPos, pState);
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        BlockEntity tile = pLevel.getBlockEntity(pPos);
+        if (!(tile instanceof TileEntityResourceScroll scroll)) return InteractionResult.PASS;
+        if (scroll.getResourceScroll() == null) return InteractionResult.PASS;
+        if (!(scroll.getResourceScroll().getItem() instanceof ItemResourceScroll item)) return InteractionResult.PASS;
+        if (!pLevel.isClientSide()) return InteractionResult.SUCCESS;
+        ((ItemResourceScrollAccessor) item).invokeOpenWindow(scroll.getResourceScroll().getOrCreateTag(), pPlayer);
+        return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
+        BlockEntity entity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (!(entity instanceof TileEntityResourceScroll scroll)) {
+            return super.getDrops(pState, pParams);
+        }
+        return List.of(scroll.getResourceScroll());
     }
 }
