@@ -1,6 +1,7 @@
 package com.sxtkl.easycolony.core.event.common;
 
 import com.minecolonies.api.items.ModItems;
+import com.minecolonies.core.tileentities.TileEntityColonyBuilding;
 import com.sxtkl.easycolony.Easycolony;
 import com.sxtkl.easycolony.api.block.AbstractResourceScrollBlock;
 import com.sxtkl.easycolony.api.block.ModBlocks;
@@ -11,6 +12,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,10 +31,13 @@ public class PlaceResourceScrollEvent {
         Player player = event.getEntity();
         if (playerItemStack.getItem() != ModItems.resourceScroll) return;
         if (!player.isCrouching()) return;
+        BlockState blockState = event.getLevel().getBlockState(event.getPos());
+        if (blockState.getBlock() instanceof EntityBlock) return;
         BlockPos pos = event.getHitVec().getBlockPos().relative(event.getHitVec().getDirection());
         AbstractResourceScrollBlock scrollBlock = ModBlocks.resourceScrollBlock;
         BlockPlaceContext placeContext = new BlockPlaceContext(player.level(), player, event.getHand(), playerItemStack, event.getHitVec());
         BlockState placement = scrollBlock.getStateForPlacement(placeContext);
+        if (event.getLevel().getBlockState(pos).getBlock() != Blocks.AIR) return;
         if (placement == null) {
             return;
         }
