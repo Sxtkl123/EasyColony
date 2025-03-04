@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "easycolony:item/recipes_clipboard"
+    "layer0": "easycolony:item/storage_clipboard"
   },
   "overrides": [
     {
@@ -14,7 +14,7 @@
       "predicate": {
         "easycolony:written": 1
       },
-      "model": "easycolony:item/recipes_clipboard"
+      "model": "easycolony:item/storage_clipboard"
     }
   ]
 }

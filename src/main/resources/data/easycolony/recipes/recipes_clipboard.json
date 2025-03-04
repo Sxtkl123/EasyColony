@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "structurize:sceptergold"
+    },
+    {
+      "tag": "minecraft:crafting_table"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:feather"
+    }
+  ],
+  "result": {
+    "item": "easycolony:recipes_clipboard"
+  }
+}

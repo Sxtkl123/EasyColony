@@ -3,6 +3,7 @@ package com.sxtkl.easycolony.apiimpl.initializer;
 import com.sxtkl.easycolony.Easycolony;
 import com.sxtkl.easycolony.api.item.ModItems;
 import com.sxtkl.easycolony.core.item.RecipesClipboardItem;
+import com.sxtkl.easycolony.core.item.StorageClipboardItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +23,7 @@ public final class ModItemsInitializer {
 
     public static void init(final IForgeRegistry<Item> registry) {
         ModItems.recipesClipboard = new RecipesClipboardItem(new Item.Properties()).registerItem(registry);
+        ModItems.storageClipboard = new StorageClipboardItem(new Item.Properties()).registerItem(registry);
     }
 
 }

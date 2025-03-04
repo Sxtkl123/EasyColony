@@ -42,6 +42,9 @@ public class RecipesClipboardItem extends AbstractClipboardItem {
         if (modulesByType.isEmpty()) {
             return false;
         }
+        if (tag.isEmpty()) {
+            return false;
+        }
         boolean allSuccess = true;
         for (AbstractCraftingBuildingModule module : modulesByType) {
             ListTag recipesTags = new ListTag();

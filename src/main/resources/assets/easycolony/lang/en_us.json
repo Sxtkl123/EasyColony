@@ -1,5 +1,7 @@
 {
   "block.easycolony.citizen_sensor": "Citizen sensor",
+  "item.easycolony.recipes_clipboard": "Recipes clipboard",
+  "item.easycolony.storage_clipboard": "Storage clipboard",
   "com.sxtkl.easycolony.colony.hurt.message": "I was hurt by %s at (X: %d, Y: %d, Z: %d).",
   "com.sxtkl.easycolony.event.resurrect.no_grave_data": "This grave does not seem to be hosting the souls of the dead...",
   "com.sxtkl.easycolony.event.resurrect.no_colony": "This lonely soul seems to have lost his way...",
