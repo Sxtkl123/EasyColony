@@ -155,5 +155,8 @@
   "com.sxtkl.easycolony.gui.builder.stock_qty": "Please enter the quantity of stock.",
   "com.sxtkl.easycolony.gui.builder.reach_limit": "Reach Limit",
   "com.sxtkl.easycolony.message.paste_fail": "Fail to paste all data to building, please check the result.",
-  "com.sxtkl.easycolony.message.paste_success": "Success paste clipboard to building!"
+  "com.sxtkl.easycolony.message.paste_success": "Success paste clipboard to building!",
+  "com.sxtkl.easycolony.tooltip.clipboard_copy": "Shift + Left Click: Copy",
+  "com.sxtkl.easycolony.tooltip.clipboard_clear": "Shift + Middle Click: Clear",
+  "com.sxtkl.easycolony.tooltip.clipboard_paste": "Shift + Right Click: Paste"
 }

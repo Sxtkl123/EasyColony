@@ -6,7 +6,7 @@
           <box size="100% 17" linewidth="1">
                <itemicon id="resourceIcon" size="17 17" pos="0 0"/>
                <label id="resourceName" size="60 12" pos="20 1" color="black"/>
-               <label id="resourceQty" size="12 12" pos="80 1" color="black"/>
+               <label id="resourceQty" size="35 12" pos="65 1" color="black" textalign="MIDDLE_RIGHT"/>
 
                <buttonimage label="$(com.sxtkl.easycolony.gui.builder.stock)" id="addStock" pos="100 1" size="44 16"
                             source="minecolonies:textures/gui/builderhut/builder_button_quite_small.png" textcolor="black"/>

@@ -74,7 +74,7 @@ public class ConsumeStatsModuleWindow extends AbstractModuleWindow {
                 }
 
                 rowPane.findPaneOfTypeByID(RESOURCE_NAME, Text.class).setText(resource.getHoverName());
-                rowPane.findPaneOfTypeByID(QUANTITY_LABEL, Text.class).setText(Component.literal(String.valueOf(moduleView.getConsume().get(index).getB())));
+                rowPane.findPaneOfTypeByID(QUANTITY_LABEL, Text.class).setText(Component.literal(formatNumber(moduleView.getConsume().get(index).getB())));
                 rowPane.findPaneOfTypeByID(RESOURCE_ICON, ItemIcon.class).setItem(resource);
             }
         });
@@ -105,5 +105,24 @@ public class ConsumeStatsModuleWindow extends AbstractModuleWindow {
         }
         Network.getNetwork().sendToServer(new AddMinimumStockToBuildingModuleMessage(buildingView, tuple.getA().getItemStack(), qty));
         updateConsumedList();
+    }
+
+    private static String formatNumber(int number) {
+        if (number <= 0) {
+            return "0";
+        }
+        String[] units = { "K", "M", "G", "T" };
+        int i = -1;
+        int digit = 0;
+        while (number >= 1000) {
+            digit = (number / 100) % 10;
+            number /= 1000;
+            i += 1;
+        }
+        String ans = String.valueOf(number);
+        if (i == -1 || i >= units.length) {
+            return ans;
+        }
+        return ans + "." + digit + units[i];
     }
 }

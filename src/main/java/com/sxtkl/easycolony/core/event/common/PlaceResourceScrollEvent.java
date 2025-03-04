@@ -1,7 +1,6 @@
 package com.sxtkl.easycolony.core.event.common;
 
 import com.minecolonies.api.items.ModItems;
-import com.minecolonies.core.tileentities.TileEntityColonyBuilding;
 import com.sxtkl.easycolony.Easycolony;
 import com.sxtkl.easycolony.api.block.AbstractResourceScrollBlock;
 import com.sxtkl.easycolony.api.block.ModBlocks;
