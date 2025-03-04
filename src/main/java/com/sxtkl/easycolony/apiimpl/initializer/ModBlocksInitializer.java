@@ -15,16 +15,14 @@ import net.minecraftforge.registries.RegisterEvent;
 @Mod.EventBusSubscriber(modid = Easycolony.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModBlocksInitializer {
     @SubscribeEvent
-    public static void registerBlocks(RegisterEvent event)
-    {
+    public static void registerBlocks(RegisterEvent event) {
         if (event.getRegistryKey().equals(ForgeRegistries.Keys.BLOCKS)) {
             init(event.getForgeRegistry());
         }
     }
 
     @SubscribeEvent
-    public static void registerItems(RegisterEvent event)
-    {
+    public static void registerItems(RegisterEvent event) {
         if (event.getRegistryKey().equals(ForgeRegistries.Keys.ITEMS)) {
             registerBlockItem(event.getForgeRegistry());
         }
