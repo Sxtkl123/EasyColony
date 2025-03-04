@@ -151,5 +151,7 @@
   "com.sxtkl.easycolony.gui.builder.stock": "Stock",
   "com.sxtkl.easycolony.gui.builder.clear": "Clear",
   "com.sxtkl.easycolony.gui.builder.stock_qty": "Please enter the quantity of stock.",
-  "com.sxtkl.easycolony.gui.builder.reach_limit": "Reach Limit"
+  "com.sxtkl.easycolony.gui.builder.reach_limit": "Reach Limit",
+  "com.sxtkl.easycolony.message.paste_fail": "Fail to paste all data to building, please check the result.",
+  "com.sxtkl.easycolony.message.paste_success": "Success paste clipboard to building!"
 }

@@ -151,5 +151,7 @@
   "com.sxtkl.easycolony.gui.builder.stock": "添加库存",
   "com.sxtkl.easycolony.gui.builder.clear": "清空统计",
   "com.sxtkl.easycolony.gui.builder.stock_qty": "请输入添加最低库存时的物品组数。",
-  "com.sxtkl.easycolony.gui.builder.reach_limit": "已达上限"
+  "com.sxtkl.easycolony.gui.builder.reach_limit": "已达上限",
+  "com.sxtkl.easycolony.message.paste_fail": "未能将所有信息粘贴至建筑物，请手动检查！",
+  "com.sxtkl.easycolony.message.paste_success": "成功粘贴至建筑物！"
 }
