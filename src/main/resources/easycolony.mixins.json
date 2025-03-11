@@ -8,6 +8,8 @@
     "accessor.minecolonies.GraveyardManagementModuleAccessor",
     "accessor.minecolonies.ItemResourceScrollAccessor",
     "accessor.minecolonies.MinimumStockModuleAccessor",
+    "common.domumornamentum.ShingleBlockMixin",
+    "common.domumornamentum.TimberFrameBlockMixin",
     "common.minecolonies.AbstractEntityAIBasicMixin",
     "common.minecolonies.AbstractEntityAIStructureMixin",
     "common.minecolonies.AbstractTileEntityNamedGraveMixin",
@@ -17,7 +19,6 @@
     "common.minecolonies.FoodUtilsMixin",
     "common.minecolonies.GraveyardManagementModuleMixin",
     "common.minecolonies.ItemResourceScrollMixin",
-    "common.minecolonies.ModBuildingsInitializerMixin",
     "common.minecolonies.NetworkChannelMixin",
     "common.minecraft.BasePressurePlateBlockMixin"
   ],
