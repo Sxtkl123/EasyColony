@@ -1,10 +1,10 @@
 package com.sxtkl.easycolony;
 
 
-import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.mojang.logging.LogUtils;
 import com.sxtkl.easycolony.api.creativetab.ModCreativeTabs;
 import com.sxtkl.easycolony.apiimpl.initializer.ModBuildingsInitializer;
+import com.sxtkl.easycolony.apiimpl.initializer.ModCraftingTypesInitializer;
 import com.sxtkl.easycolony.apiimpl.initializer.ModTileEntitiesInitializer;
 import com.sxtkl.easycolony.core.network.NetworkChannel;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
