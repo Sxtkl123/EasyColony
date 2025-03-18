@@ -3,11 +3,9 @@ package com.sxtkl.easycolony.core.event.client;
 import com.sxtkl.easycolony.Easycolony;
 import com.sxtkl.easycolony.core.bake.TimberFrameBakedModel;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;

@@ -22,7 +22,7 @@ public abstract class AbstractEntityAIStructureMixin<J extends AbstractJobStruct
     @ModifyArg(method = "structureStep", at = @At(value = "INVOKE", target = "Lcom/minecolonies/core/entity/ai/workers/AbstractEntityAIStructure;setDelay(I)V"), index = 0, remap = false)
     public int structureStep$setDelay(int timeout) {
         if ("fixed".equals(Config.builderDelayMode)) return Config.builderFixedDelay;
-        if ("magnification".equals(Config.builderDelayMode)) return (int)(timeout * Config.builderDelayMagnification);
+        if ("magnification".equals(Config.builderDelayMode)) return (int) (timeout * Config.builderDelayMagnification);
         return timeout;
     }
 

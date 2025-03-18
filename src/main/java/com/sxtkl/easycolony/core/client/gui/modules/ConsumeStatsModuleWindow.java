@@ -111,7 +111,7 @@ public class ConsumeStatsModuleWindow extends AbstractModuleWindow {
         if (number <= 0) {
             return "0";
         }
-        String[] units = { "K", "M", "G", "T" };
+        String[] units = {"K", "M", "G", "T"};
         int i = -1;
         int digit = 0;
         while (number >= 1000) {

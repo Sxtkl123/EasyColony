@@ -28,7 +28,8 @@ public class HurtAlertEvent {
         // 判断是否受到的伤害来源为实体
         if (src == null) return;
         // 判断是否为卫兵
-        if (citizen.getCitizenJobHandler().getColonyJob() != null && citizen.getCitizenJobHandler().getColonyJob().isGuard()) return;
+        if (citizen.getCitizenJobHandler().getColonyJob() != null && citizen.getCitizenJobHandler().getColonyJob().isGuard())
+            return;
 
         // 发出通告，说自己被锤了
         MutableComponent message = Component.translatable(

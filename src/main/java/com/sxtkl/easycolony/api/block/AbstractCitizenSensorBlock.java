@@ -40,9 +40,9 @@ public abstract class AbstractCitizenSensorBlock extends PressurePlateBlock impl
     public AbstractCitizenSensorBlock() {
         super(Sensitivity.MOBS,
                 Properties.copy(Blocks.OAK_PLANKS).noOcclusion().noCollission()
-                .isViewBlocking((a, b, c) -> false)
-                .isSuffocating((a, b, c) -> false)
-                .isValidSpawn((a, b, c, d) -> false),
+                        .isViewBlocking((a, b, c) -> false)
+                        .isSuffocating((a, b, c) -> false)
+                        .isValidSpawn((a, b, c, d) -> false),
                 BlockSetType.OAK);
         this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
     }
@@ -63,7 +63,7 @@ public abstract class AbstractCitizenSensorBlock extends PressurePlateBlock impl
         List<Player> players = pLevel.getEntitiesOfClass(Player.class, move);
         if (entities.isEmpty() && players.isEmpty()) return 0;
         for (EntityCitizen entity : entities) {
-            if(!entity.isIgnoringBlockTriggers()) {
+            if (!entity.isIgnoringBlockTriggers()) {
                 return 15;
             }
         }

@@ -16,9 +16,9 @@ public class ClipboardOverrideTextureEvent {
     public static void propertyOverrideRegistry(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             ItemProperties.register(
-                ModItems.recipesClipboard,
-                new ResourceLocation(Easycolony.MODID, "written"),
-                ((pStack, pLevel, pEntity, pSeed) -> pStack.getOrCreateTag().isEmpty() ? 0.0F : 1.0F)
+                    ModItems.recipesClipboard,
+                    new ResourceLocation(Easycolony.MODID, "written"),
+                    ((pStack, pLevel, pEntity, pSeed) -> pStack.getOrCreateTag().isEmpty() ? 0.0F : 1.0F)
             );
             ItemProperties.register(
                     ModItems.storageClipboard,

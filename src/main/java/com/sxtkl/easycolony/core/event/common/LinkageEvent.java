@@ -13,9 +13,9 @@ public class LinkageEvent {
     @SubscribeEvent
     public static void onFMLCommonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-           if (ModList.get().isLoaded("jecharacters")) {
-               LinkageManager.setup();
-           }
+            if (ModList.get().isLoaded("jecharacters")) {
+                LinkageManager.setup();
+            }
         });
     }
 

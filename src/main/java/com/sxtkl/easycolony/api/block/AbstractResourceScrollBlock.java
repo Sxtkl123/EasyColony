@@ -102,7 +102,7 @@ public abstract class AbstractResourceScrollBlock extends Block implements Entit
         LevelReader levelreader = pContext.getLevel();
         BlockPos blockpos = pContext.getClickedPos();
 
-        for(Direction direction : pContext.getNearestLookingDirections()) {
+        for (Direction direction : pContext.getNearestLookingDirections()) {
             if (direction.getAxis().isHorizontal()) {
                 defaultState = defaultState.setValue(FACING, direction.getOpposite());
                 if (defaultState.canSurvive(levelreader, blockpos)) {

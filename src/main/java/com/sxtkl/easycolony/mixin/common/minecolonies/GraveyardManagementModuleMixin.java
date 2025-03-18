@@ -31,7 +31,7 @@ public abstract class GraveyardManagementModuleMixin extends AbstractBuildingMod
     private GraveData lastGraveData;
 
     @Inject(method = "buryCitizenHere", at = @At(value = "INVOKE", target = "Lcom/minecolonies/core/tileentities/TileEntityNamedGrave;setTextLines(Ljava/util/ArrayList;)V"
-    , shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
+            , shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
     public void buryCitizenHere(Tuple<BlockPos, Direction> positionAndDirection, AbstractEntityCitizen worker, CallbackInfo ci, IColony colony, Direction facing, BlockEntity tileEntity, String firstName, String lastName, ArrayList<String> lines) {
         IGraveDataExtension graveDataExtension = (IGraveDataExtension) tileEntity;
         graveDataExtension.setGraveData(lastGraveData);

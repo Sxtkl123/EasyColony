@@ -31,6 +31,7 @@ public class StoneCuttingCraftingModule extends AbstractCraftingBuildingModule.C
         return canLearn(ModCraftingTypes.STONECUTTING_CRAFTING.get()) &&
                 recipe.getIntermediate() == Blocks.AIR;
     }
+
     @Override
     public @NotNull OptionalPredicate<ItemStack> getIngredientValidator() {
         return CraftingUtils.getIngredientValidatorBasedOnTags(CRAFTING_STONEMASON)
