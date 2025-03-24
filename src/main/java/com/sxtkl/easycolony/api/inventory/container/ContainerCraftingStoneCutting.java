@@ -1,39 +1,36 @@
 package com.sxtkl.easycolony.api.inventory.container;
 
-import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.util.ItemStackUtils;
 import com.sxtkl.easycolony.api.inventory.ModContainers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.SlotItemHandler;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.StonecutterRecipe;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
+import java.util.List;
 
 import static com.minecolonies.api.util.constant.InventoryConstants.*;
 
 public class ContainerCraftingStoneCutting extends AbstractContainerMenu {
 
-    /**
-     * The furnace inventory.
-     */
-    private final IItemHandler furnaceInventory;
+    private List<StonecutterRecipe> recipes = List.of();
 
-    /**
-     * The player assigned to it.
-     */
+    private final Container inputContainer = new SimpleContainer(1);
+
     private final Inventory playerInventory;
 
-    /**
-     * The colony building.
-     */
+    private final Level level;
+
     public final BlockPos buildingPos;
 
     /**
@@ -49,73 +46,11 @@ public class ContainerCraftingStoneCutting extends AbstractContainerMenu {
 
     public ContainerCraftingStoneCutting(final int windowId, final Inventory inv, final BlockPos pos, final int moduleId) {
         super(ModContainers.craftingStoneCutting.get(), windowId);
+        this.level = inv.player.level();
         this.moduleId = moduleId;
-        this.furnaceInventory = new IItemHandlerModifiable() {
-            ItemStack input = ItemStack.EMPTY;
-            ItemStack output = ItemStack.EMPTY;
-
-            @Override
-            public void setStackInSlot(final int slot, @Nonnull final ItemStack stack) {
-                final ItemStack copy = stack.copy();
-                copy.setCount(1);
-                if (slot == 0) {
-                    input = copy;
-                } else {
-                    output = copy;
-                }
-            }
-
-            @Override
-            public int getSlots() {
-                return 3;
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack getStackInSlot(final int slot) {
-                if (slot == 0) {
-                    return input;
-                } else {
-                    return output;
-                }
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack insertItem(final int slot, @Nonnull final ItemStack stack, final boolean simulate) {
-                final ItemStack copy = stack.copy();
-                copy.setCount(1);
-                if (slot == 0) {
-                    input = copy;
-                } else {
-                    output = copy;
-                }
-                return stack;
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack extractItem(final int slot, final int amount, final boolean simulate) {
-                return ItemStack.EMPTY;
-            }
-
-            @Override
-            public int getSlotLimit(final int slot) {
-                return 1;
-            }
-
-            @Override
-            public boolean isItemValid(final int slot, @Nonnull final ItemStack stack) {
-                if (slot == 0) {
-                    return !IMinecoloniesAPI.getInstance().getFurnaceRecipes().getSmeltingResult(stack).isEmpty();
-                } else {
-                    return false;
-                }
-            }
-        };
         this.playerInventory = inv;
         this.buildingPos = pos;
-        this.addSlot(new SlotItemHandler(furnaceInventory, 0, 56, 17) {
+        this.addSlot(new Slot(inputContainer, 0, 20, 33) {
             @Override
             public int getMaxStackSize() {
                 return 1;
@@ -128,22 +63,16 @@ public class ContainerCraftingStoneCutting extends AbstractContainerMenu {
             }
 
             @Override
-            public boolean mayPlace(final ItemStack par1ItemStack) {
+            public boolean mayPlace(final @NotNull ItemStack par1ItemStack) {
                 return true;
             }
 
             @Override
-            public boolean mayPickup(final Player par1PlayerEntity) {
+            public boolean mayPickup(final @NotNull Player player) {
                 return false;
             }
         });
-
-        this.addSlot(new SlotItemHandler(furnaceInventory, 1, 116, 35));
-
-        // Player inventory slots
-        // Note: The slot numbers are within the player inventory and may be the same as the field inventory.
-        int i;
-        for (i = 0; i < INVENTORY_ROWS; i++) {
+        for (int i = 0; i < INVENTORY_ROWS; i++) {
             for (int j = 0; j < INVENTORY_COLUMNS; j++) {
                 addSlot(new Slot(
                         playerInventory,
@@ -153,8 +82,7 @@ public class ContainerCraftingStoneCutting extends AbstractContainerMenu {
                 ));
             }
         }
-
-        for (i = 0; i < INVENTORY_COLUMNS; i++) {
+        for (int i = 0; i < INVENTORY_COLUMNS; i++) {
             addSlot(new Slot(
                     playerInventory, i,
                     PLAYER_INVENTORY_INITIAL_X_OFFSET + i * PLAYER_INVENTORY_OFFSET_EACH,
@@ -168,30 +96,37 @@ public class ContainerCraftingStoneCutting extends AbstractContainerMenu {
         return true;
     }
 
+    @Override
+    public void clicked(final int slotId, final int clickedButton, final @NotNull ClickType mode, final @NotNull Player playerIn) {
+        if (slotId == 0) {
+            if (mode == ClickType.PICKUP || mode == ClickType.PICKUP_ALL || mode == ClickType.SWAP) {
+                final Slot slot = this.slots.get(slotId);
+                handleSlotClick(slot, this.getCarried());
+            }
+        } else {
+            super.clicked(slotId, clickedButton, mode, playerInventory.player);
+        }
+    }
+
     @NotNull
     @Override
     public ItemStack quickMoveStack(final Player playerIn, final int index) {
-        if (index <= FURNACE_SLOTS) {
+        if (index <= 1) {
             return ItemStack.EMPTY;
         }
 
         ItemStack itemstack = ItemStackUtils.EMPTY;
         final Slot slot = this.slots.get(index);
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             final ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            if (index == 0) {
-                if (!this.moveItemStackTo(itemstack1, FURNACE_SLOTS, TOTAL_SLOTS_FURNACE, true)) {
-                    return ItemStackUtils.EMPTY;
-                }
-                slot.onQuickCraft(itemstack1, itemstack);
-            } else if (index < HOTBAR_START) {
+            if (index < HOTBAR_START) {
                 if (!this.moveItemStackTo(itemstack1, HOTBAR_START, TOTAL_SLOTS_FURNACE, false)) {
                     return ItemStackUtils.EMPTY;
                 }
             } else if ((index < TOTAL_SLOTS_FURNACE
-                    && !this.moveItemStackTo(itemstack1, FURNACE_SLOTS, HOTBAR_START, false))
-                    || !this.moveItemStackTo(itemstack1, FURNACE_SLOTS, TOTAL_SLOTS_FURNACE, false)) {
+                    && !this.moveItemStackTo(itemstack1, 1, HOTBAR_START, false))
+                    || !this.moveItemStackTo(itemstack1, 1, TOTAL_SLOTS_FURNACE, false)) {
                 return ItemStack.EMPTY;
             }
             if (itemstack1.getCount() == 0) {
@@ -226,5 +161,20 @@ public class ContainerCraftingStoneCutting extends AbstractContainerMenu {
      */
     public int getModuleId() {
         return this.moduleId;
+    }
+
+    private void handleSlotClick(final Slot slot, final ItemStack stack) {
+        if (stack.getCount() > 0) {
+            final ItemStack copy = stack.copy();
+            copy.setCount(1);
+            slot.set(copy);
+            this.recipes = this.level.getRecipeManager().getRecipesFor(RecipeType.STONECUTTING, inputContainer, this.level);
+        } else if (slot.getItem().getCount() > 0) {
+            slot.set(ItemStack.EMPTY);
+        }
+    }
+
+    public List<StonecutterRecipe> getRecipes() {
+        return recipes;
     }
 }

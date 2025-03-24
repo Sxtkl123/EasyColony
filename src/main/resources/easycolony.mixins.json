@@ -20,6 +20,7 @@
     "common.minecolonies.GraveyardManagementModuleMixin",
     "common.minecolonies.ItemResourceScrollMixin",
     "common.minecolonies.NetworkChannelMixin",
+    "common.minecolonies.OpenCraftingGUIMessageMixin",
     "common.minecraft.BasePressurePlateBlockMixin"
   ],
   "client": [

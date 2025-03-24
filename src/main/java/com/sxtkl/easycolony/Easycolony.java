@@ -4,6 +4,8 @@ package com.sxtkl.easycolony;
 import com.mojang.logging.LogUtils;
 import com.sxtkl.easycolony.api.creativetab.ModCreativeTabs;
 import com.sxtkl.easycolony.apiimpl.initializer.ModBuildingsInitializer;
+import com.sxtkl.easycolony.apiimpl.initializer.ModContainerInitializers;
+import com.sxtkl.easycolony.apiimpl.initializer.ModCraftingTypesInitializer;
 import com.sxtkl.easycolony.apiimpl.initializer.ModTileEntitiesInitializer;
 import com.sxtkl.easycolony.core.network.NetworkChannel;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,6 +26,8 @@ public class Easycolony {
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         ModCreativeTabs.TAB_REG.register(context.getModEventBus());
         ModTileEntitiesInitializer.BLOCK_ENTITIES.register(context.getModEventBus());
+        ModContainerInitializers.CONTAINERS.register(context.getModEventBus());
+        ModCraftingTypesInitializer.DEFERRED_REGISTER.register(context.getModEventBus());
 
         Mod.EventBusSubscriber.Bus.FORGE.bus().get().register(this.getClass());
         Mod.EventBusSubscriber.Bus.MOD.bus().get().register(this.getClass());

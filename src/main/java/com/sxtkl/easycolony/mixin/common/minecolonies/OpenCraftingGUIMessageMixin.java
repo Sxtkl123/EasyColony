@@ -28,7 +28,7 @@ public abstract class OpenCraftingGUIMessageMixin {
     @Shadow(remap = false)
     private int id;
 
-    @Inject(method = "onExecute", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/network/NetworkHooks;openScreen(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/MenuProvider;Ljava/util/function/Consumer;)V", ordinal = 2), remap = false)
+    @Inject(method = "onExecute", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/network/NetworkHooks;openScreen(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/MenuProvider;Ljava/util/function/Consumer;)V", ordinal = 2), remap = false, cancellable = true)
     public void onExecute(NetworkEvent.Context ctxIn, boolean isLogicalServer, IColony colony, IBuilding building, CallbackInfo ci) {
         AbstractCraftingBuildingModule module = (AbstractCraftingBuildingModule) building.getModule(id);
         if (module.canLearn(ModCraftingTypes.STONECUTTING_CRAFTING.get())) {
@@ -45,6 +45,7 @@ public abstract class OpenCraftingGUIMessageMixin {
                     return new ContainerCraftingStoneCutting(id, inv, building.getID(), module.getProducer().getRuntimeID());
                 }
             }, buffer -> new FriendlyByteBuf(buffer.writeBlockPos(building.getID()).writeInt(module.getProducer().getRuntimeID())));
+            ci.cancel();
         }
     }
 
