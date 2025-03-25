@@ -171,10 +171,15 @@ public class ContainerCraftingStoneCutting extends AbstractContainerMenu {
             this.recipes = this.level.getRecipeManager().getRecipesFor(RecipeType.STONECUTTING, inputContainer, this.level);
         } else if (slot.getItem().getCount() > 0) {
             slot.set(ItemStack.EMPTY);
+            this.recipes = List.of();
         }
     }
 
     public List<StonecutterRecipe> getRecipes() {
         return recipes;
+    }
+
+    public Container getInputContainer() {
+        return inputContainer;
     }
 }

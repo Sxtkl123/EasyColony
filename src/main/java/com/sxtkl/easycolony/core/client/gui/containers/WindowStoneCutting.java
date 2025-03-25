@@ -1,22 +1,27 @@
 package com.sxtkl.easycolony.core.client.gui.containers;
 
 import com.minecolonies.api.colony.IColonyManager;
+import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.crafting.ItemStorage;
-import com.minecolonies.api.util.ItemStackUtils;
+import com.minecolonies.api.util.constant.TypeConstants;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 import com.minecolonies.core.colony.buildings.views.AbstractBuildingView;
 import com.minecolonies.core.network.messages.server.colony.building.worker.AddRemoveRecipeMessage;
 import com.sxtkl.easycolony.api.crafting.ModCraftingTypes;
 import com.sxtkl.easycolony.api.inventory.container.ContainerCraftingStoneCutting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,15 +53,15 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
 
     private final ContainerCraftingStoneCutting container;
 
-    /**
-     * The building assigned to this.
-     */
     private final AbstractBuildingView building;
 
-    /**
-     * The module this crafting window is for.
-     */
     private final CraftingModuleView module;
+
+    private float scrollOffs;
+
+    private boolean scrolling;
+
+    private int startIndex;
 
     /**
      * Create a crafting gui window.
@@ -95,13 +100,10 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
         @Override
         public void onPress(@NotNull final Button button) {
             if (module.canLearn(ModCraftingTypes.STONECUTTING_CRAFTING.get())) {
-                final List<ItemStorage> input = new ArrayList<>();
-                input.add(new ItemStorage(container.slots.get(0).getItem()));
-                final ItemStack primaryOutput = container.slots.get(1).getItem().copy();
-
-                if (!ItemStackUtils.isEmpty(primaryOutput)) {
-                    Network.getNetwork().sendToServer(new AddRemoveRecipeMessage(building, input, 1, primaryOutput, false, Blocks.FURNACE, module.getProducer().getRuntimeID()));
+                if (WindowStoneCutting.this.menu.getRecipes().isEmpty()) {
+                    return;
                 }
+                WindowStoneCutting.this.addRecipe();
             }
         }
     }
@@ -110,8 +112,34 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
      * Draws the background layer of this container (behind the items).
      */
     @Override
-    protected void renderBg(@NotNull final GuiGraphics stack, final float partialTicks, final int mouseX, final int mouseY) {
-        stack.blit(CRAFTING_STONE_CUTTER, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+    protected void renderBg(@NotNull final GuiGraphics graph, final float partialTicks, final int mouseX, final int mouseY) {
+        graph.blit(CRAFTING_STONE_CUTTER, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        int l = this.leftPos + 52;
+        int i1 = this.topPos + 14;
+        int k = (int)(41.0F * this.scrollOffs);
+        int j1 = this.startIndex + 12;
+        graph.blit(CRAFTING_STONE_CUTTER, this.leftPos + 119, this.topPos + 15 + k, 176 + (this.isScrollBarActive() ? 0 : 12), 0, 12, 15);
+        this.renderButtons(graph, mouseX, mouseY, l, i1, j1);
+        this.renderRecipes(graph, l, i1, j1);
+    }
+
+    @Override
+    protected void renderTooltip(@NotNull GuiGraphics graph, int pX, int pY) {
+        super.renderTooltip(graph, pX, pY);
+        int i = this.leftPos + 52;
+        int j = this.topPos + 14;
+        int k = this.startIndex + 12;
+        List<StonecutterRecipe> list = this.menu.getRecipes();
+
+        for(int l = this.startIndex; l < k && l < this.menu.getRecipes().size(); ++l) {
+            int i1 = l - this.startIndex;
+            int j1 = i + i1 % 4 * 16;
+            int k1 = j + i1 / 4 * 18 + 2;
+            if (pX >= j1 && pX < j1 + 16 && pY >= k1 && pY < k1 + 18) {
+                graph.renderTooltip(this.font, list.get(l).getResultItem(this.minecraft.level.registryAccess()), pX, pY);
+            }
+        }
+
     }
 
     @Override
@@ -121,8 +149,119 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
         this.renderTooltip(stack, x, y);
     }
 
-    private void renderRecipes(GuiGraphics pGuiGraphics, int pX, int pY, int pStartIndex) {
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        this.scrolling = false;
+        int i = this.leftPos + 52;
+        int j = this.topPos + 14;
+        int k = this.startIndex + 12;
 
+        for(int l = this.startIndex; l < k; ++l) {
+            int i1 = l - this.startIndex;
+            double d0 = pMouseX - (double)(i + i1 % 4 * 16);
+            double d1 = pMouseY - (double)(j + i1 / 4 * 18);
+            if (d0 >= 0.0D && d1 >= 0.0D && d0 < 16.0D && d1 < 18.0D && this.menu.clickMenuButton(this.minecraft.player, l)) {
+                Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+                this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, l);
+                return true;
+            }
+        }
+
+        i = this.leftPos + 119;
+        j = this.topPos + 9;
+        if (pMouseX >= (double)i && pMouseX < (double)(i + 12) && pMouseY >= (double)j && pMouseY < (double)(j + 54)) {
+            this.scrolling = true;
+        }
+
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
+    }
+
+    public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
+        if (this.scrolling && this.isScrollBarActive()) {
+            int i = this.topPos + 14;
+            int j = i + 54;
+            this.scrollOffs = ((float)pMouseY - (float)i - 7.5F) / ((float)(j - i) - 15.0F);
+            this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 1.0F);
+            this.startIndex = (int)((double)(this.scrollOffs * (float)this.getOffscreenRows()) + 0.5D) * 4;
+            return true;
+        } else {
+            return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
+        }
+    }
+
+    @Override
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+        if (this.isScrollBarActive()) {
+            int i = this.getOffscreenRows();
+            float f = (float)pDelta / (float)i;
+            this.scrollOffs = Mth.clamp(this.scrollOffs - f, 0.0F, 1.0F);
+            this.startIndex = (int)((double)(this.scrollOffs * (float)i) + 0.5D) * 4;
+        }
+
+        return true;
+    }
+
+    private void renderButtons(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, int pX, int pY, int pLastVisibleElementIndex) {
+        for(int i = this.startIndex; i < pLastVisibleElementIndex && i < this.menu.getRecipes().size(); ++i) {
+            int j = i - this.startIndex;
+            int k = pX + j % 4 * 16;
+            int l = j / 4;
+            int i1 = pY + l * 18 + 2;
+            int j1 = this.imageHeight;
+            if (pMouseX >= k && pMouseY >= i1 && pMouseX < k + 16 && pMouseY < i1 + 18) {
+                j1 += 36;
+            }
+
+            pGuiGraphics.blit(CRAFTING_STONE_CUTTER, k, i1 - 1, 0, j1, 16, 18);
+        }
+
+    }
+
+    private void renderRecipes(GuiGraphics pGuiGraphics, int pX, int pY, int pStartIndex) {
+        List<StonecutterRecipe> list = this.menu.getRecipes();
+
+        for(int i = this.startIndex; i < pStartIndex && i < this.menu.getRecipes().size(); ++i) {
+            int j = i - this.startIndex;
+            int k = pX + j % 4 * 16;
+            int l = j / 4;
+            int i1 = pY + l * 18 + 2;
+            pGuiGraphics.renderItem(list.get(i).getResultItem(this.minecraft.level.registryAccess()), k, i1);
+        }
+    }
+
+    private boolean isScrollBarActive() {
+        return this.menu.getRecipes().size() > 12;
+    }
+
+    private int getOffscreenRows() {
+        return (this.menu.getRecipes().size() + 4 - 1) / 4 - 3;
+    }
+
+    private void addRecipe() {
+        final List<StonecutterRecipe> list = this.container.getRecipes();
+
+        final ItemStack inputStack = container.getInputContainer().getItem(0).copy();
+        inputStack.setCount(1);
+        final ItemStorage input = new ItemStorage(inputStack);
+
+        final List<ItemStack> additionalOutput = new ArrayList<>();
+        for (int i = 1; i < list.size(); i++) {
+            additionalOutput.add(list.get(i).assemble(container.getInputContainer(), Minecraft.getInstance().level.registryAccess()).copy());
+        }
+
+        final IRecipeStorage storage = StandardFactoryController.getInstance().getNewInstance(
+                TypeConstants.RECIPE,
+                StandardFactoryController.getInstance().getNewInstance(TypeConstants.ITOKEN),
+                List.of(input),
+                3,
+                list.get(0).assemble(container.getInputContainer(), Minecraft.getInstance().level.registryAccess()).copy(),
+                Blocks.AIR,
+                null,
+                com.minecolonies.api.crafting.ModRecipeTypes.MULTI_OUTPUT_ID,
+                additionalOutput,
+                new ArrayList<>()
+        );
+
+        Network.getNetwork().sendToServer(new AddRemoveRecipeMessage(building, false, storage, module.getProducer().getRuntimeID()));
     }
 
 }

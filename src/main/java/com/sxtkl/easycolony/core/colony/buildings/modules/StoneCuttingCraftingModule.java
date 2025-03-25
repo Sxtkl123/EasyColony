@@ -1,6 +1,7 @@
 package com.sxtkl.easycolony.core.colony.buildings.modules;
 
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
+import com.minecolonies.api.crafting.IGenericRecipe;
 import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.util.CraftingUtils;
 import com.minecolonies.api.util.OptionalPredicate;
@@ -17,6 +18,11 @@ public class StoneCuttingCraftingModule extends AbstractCraftingBuildingModule.C
 
     public StoneCuttingCraftingModule(JobEntry jobEntry) {
         super(jobEntry);
+    }
+
+    @Override
+    public boolean isRecipeCompatible(@NotNull final IGenericRecipe recipe) {
+        return true;
     }
 
     @Override
