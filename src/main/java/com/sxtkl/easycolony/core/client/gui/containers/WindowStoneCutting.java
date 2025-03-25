@@ -77,11 +77,6 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
         this.module = (CraftingModuleView) building.getModuleView(container.getModuleId());
     }
 
-    @NotNull
-    public AbstractBuildingView getBuildingView() {
-        return building;
-    }
-
     @Override
     protected void init() {
         super.init();
@@ -114,8 +109,8 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
     @Override
     protected void renderBg(@NotNull final GuiGraphics graph, final float partialTicks, final int mouseX, final int mouseY) {
         graph.blit(CRAFTING_STONE_CUTTER, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
-        int l = this.leftPos + 52;
-        int i1 = this.topPos + 14;
+        int l = this.leftPos + RECIPES_X;
+        int i1 = this.topPos + RECIPES_Y;
         int k = (int)(41.0F * this.scrollOffs);
         int j1 = this.startIndex + 12;
         graph.blit(CRAFTING_STONE_CUTTER, this.leftPos + 119, this.topPos + 15 + k, 176 + (this.isScrollBarActive() ? 0 : 12), 0, 12, 15);
@@ -126,16 +121,16 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
     @Override
     protected void renderTooltip(@NotNull GuiGraphics graph, int pX, int pY) {
         super.renderTooltip(graph, pX, pY);
-        int i = this.leftPos + 52;
-        int j = this.topPos + 14;
+        int i = this.leftPos + RECIPES_X;
+        int j = this.topPos + RECIPES_Y;
         int k = this.startIndex + 12;
         List<StonecutterRecipe> list = this.menu.getRecipes();
 
         for(int l = this.startIndex; l < k && l < this.menu.getRecipes().size(); ++l) {
             int i1 = l - this.startIndex;
-            int j1 = i + i1 % 4 * 16;
-            int k1 = j + i1 / 4 * 18 + 2;
-            if (pX >= j1 && pX < j1 + 16 && pY >= k1 && pY < k1 + 18) {
+            int j1 = i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
+            int k1 = j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 2;
+            if (pX >= j1 && pX < j1 + RECIPES_IMAGE_SIZE_WIDTH && pY >= k1 && pY < k1 + RECIPES_IMAGE_SIZE_HEIGHT) {
                 graph.renderTooltip(this.font, list.get(l).getResultItem(this.minecraft.level.registryAccess()), pX, pY);
             }
         }
@@ -151,15 +146,15 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
 
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         this.scrolling = false;
-        int i = this.leftPos + 52;
-        int j = this.topPos + 14;
+        int i = this.leftPos + RECIPES_X;
+        int j = this.topPos + RECIPES_Y;
         int k = this.startIndex + 12;
 
         for(int l = this.startIndex; l < k; ++l) {
             int i1 = l - this.startIndex;
-            double d0 = pMouseX - (double)(i + i1 % 4 * 16);
-            double d1 = pMouseY - (double)(j + i1 / 4 * 18);
-            if (d0 >= 0.0D && d1 >= 0.0D && d0 < 16.0D && d1 < 18.0D && this.menu.clickMenuButton(this.minecraft.player, l)) {
+            double d0 = pMouseX - (double)(i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH);
+            double d1 = pMouseY - (double)(j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT);
+            if (d0 >= 0.0D && d1 >= 0.0D && d0 < RECIPES_IMAGE_SIZE_WIDTH && d1 < RECIPES_IMAGE_SIZE_HEIGHT && this.menu.clickMenuButton(this.minecraft.player, l)) {
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
                 this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, l);
                 return true;
@@ -177,11 +172,11 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
 
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
         if (this.scrolling && this.isScrollBarActive()) {
-            int i = this.topPos + 14;
+            int i = this.topPos + RECIPES_Y;
             int j = i + 54;
             this.scrollOffs = ((float)pMouseY - (float)i - 7.5F) / ((float)(j - i) - 15.0F);
             this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 1.0F);
-            this.startIndex = (int)((double)(this.scrollOffs * (float)this.getOffscreenRows()) + 0.5D) * 4;
+            this.startIndex = (int)((double)(this.scrollOffs * (float)this.getOffscreenRows()) + 0.5D) * RECIPES_COLUMNS;
             return true;
         } else {
             return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
@@ -194,7 +189,7 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
             int i = this.getOffscreenRows();
             float f = (float)pDelta / (float)i;
             this.scrollOffs = Mth.clamp(this.scrollOffs - f, 0.0F, 1.0F);
-            this.startIndex = (int)((double)(this.scrollOffs * (float)i) + 0.5D) * 4;
+            this.startIndex = (int)((double)(this.scrollOffs * (float)i) + 0.5D) * RECIPES_COLUMNS;
         }
 
         return true;
@@ -203,15 +198,15 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
     private void renderButtons(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, int pX, int pY, int pLastVisibleElementIndex) {
         for(int i = this.startIndex; i < pLastVisibleElementIndex && i < this.menu.getRecipes().size(); ++i) {
             int j = i - this.startIndex;
-            int k = pX + j % 4 * 16;
-            int l = j / 4;
-            int i1 = pY + l * 18 + 2;
+            int k = pX + j % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
+            int l = j / RECIPES_COLUMNS;
+            int i1 = pY + l * RECIPES_IMAGE_SIZE_HEIGHT + 2;
             int j1 = this.imageHeight;
-            if (pMouseX >= k && pMouseY >= i1 && pMouseX < k + 16 && pMouseY < i1 + 18) {
+            if (pMouseX >= k && pMouseY >= i1 && pMouseX < k + RECIPES_IMAGE_SIZE_WIDTH && pMouseY < i1 + RECIPES_IMAGE_SIZE_HEIGHT) {
                 j1 += 36;
             }
 
-            pGuiGraphics.blit(CRAFTING_STONE_CUTTER, k, i1 - 1, 0, j1, 16, 18);
+            pGuiGraphics.blit(CRAFTING_STONE_CUTTER, k, i1 - 1, 0, j1, RECIPES_IMAGE_SIZE_WIDTH, RECIPES_IMAGE_SIZE_HEIGHT);
         }
 
     }
@@ -221,9 +216,9 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
 
         for(int i = this.startIndex; i < pStartIndex && i < this.menu.getRecipes().size(); ++i) {
             int j = i - this.startIndex;
-            int k = pX + j % 4 * 16;
-            int l = j / 4;
-            int i1 = pY + l * 18 + 2;
+            int k = pX + j % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
+            int l = j / RECIPES_COLUMNS;
+            int i1 = pY + l * RECIPES_IMAGE_SIZE_HEIGHT + 2;
             pGuiGraphics.renderItem(list.get(i).getResultItem(this.minecraft.level.registryAccess()), k, i1);
         }
     }
@@ -233,7 +228,7 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
     }
 
     private int getOffscreenRows() {
-        return (this.menu.getRecipes().size() + 4 - 1) / 4 - 3;
+        return (this.menu.getRecipes().size() + RECIPES_COLUMNS - 1) / RECIPES_COLUMNS - RECIPES_ROWS;
     }
 
     private void addRecipe() {
