@@ -11,6 +11,7 @@
     "common.domumornamentum.ShingleBlockMixin",
     "common.domumornamentum.TimberFrameBlockMixin",
     "common.minecolonies.AbstractEntityAIBasicMixin",
+    "common.minecolonies.AbstractEntityAICraftingMixin",
     "common.minecolonies.AbstractEntityAIStructureMixin",
     "common.minecolonies.AbstractTileEntityNamedGraveMixin",
     "common.minecolonies.BuildingStructureHandlerMixin",
@@ -21,6 +22,7 @@
     "common.minecolonies.ItemResourceScrollMixin",
     "common.minecolonies.NetworkChannelMixin",
     "common.minecolonies.OpenCraftingGUIMessageMixin",
+    "common.minecolonies.RecipeStorageMixin",
     "common.minecraft.BasePressurePlateBlockMixin"
   ],
   "client": [
