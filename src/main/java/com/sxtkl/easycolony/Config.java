@@ -69,8 +69,8 @@ public class Config {
         BUILDER.push("通用配置");
         EASY_PICK_MATERIAL_AI = BUILDER.comment("简易化材料寻找AI：工人在架子上找原材料时，将直接在对应的小屋方块建筑进行。")
                 .define("easy_pick_material_ai", true);
-        NOT_COLONY_FOOD_PENALTY_MULTIPLIER = BUILDER.comment("非殖民地食物惩罚倍率：市民食用非殖民地食物带来的饱食度惩罚倍率，原版为缩减倍率至：1 + 住宅等级\n如：对于一个5级住宅的市民，非殖民地食物将只能带来原本1/6的饱食度收益。\n在此基础上你可以缩减惩罚倍率，其原理是对住宅等级执行一次乘法，如乘法设为0.5，那么原本5级住宅将视为2级。")
-                .defineInRange("not_colony_food_penalty_multiplier", 1.0, 0, Integer.MAX_VALUE);
+        NOT_COLONY_FOOD_PENALTY_MULTIPLIER = BUILDER.comment("非殖民地食物惩罚倍率：市民食用非殖民地食物带来的饱食度惩罚倍率，原版为缩减倍率至：0.25")
+                .defineInRange("not_colony_food_penalty_multiplier", 0.75, 0, Integer.MAX_VALUE);
         ALLOW_HURT_ALERT = BUILDER.comment("受击提示：是否允许非警卫市民受到攻击后发出警报。")
                 .define("allow_hurt_alert", true);
         ALLOW_TOGGLE_RECIPE_MODE_AS_DEFAULT = BUILDER.comment("允许默认开启配方模式：开启后将不需要在大学研究也可以直接解锁小屋配方模式的切换。")

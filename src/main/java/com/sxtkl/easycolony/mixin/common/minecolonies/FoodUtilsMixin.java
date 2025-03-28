@@ -3,20 +3,15 @@ package com.sxtkl.easycolony.mixin.common.minecolonies;
 import com.minecolonies.api.util.FoodUtils;
 import com.sxtkl.easycolony.Config;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(value = FoodUtils.class, remap = false)
 public abstract class FoodUtilsMixin {
 
-    @ModifyVariable(
-            method = "getFoodValue(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/food/FoodProperties;ID)D",
-            remap = false,
-            at = @At("HEAD"),
-            argsOnly = true
-    )
-    private static int getFoodValue$houseLevel(int houseLevel) {
-        return (int) (Config.notColonyFoodPenaltyMultiplier * houseLevel);
+    @ModifyConstant(method = "getFoodValue(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/food/FoodProperties;D)D", constant = @Constant(doubleValue = 0.25D))
+    private static double getFoodValue$houseLevel(double constant) {
+        return Config.notColonyFoodPenaltyMultiplier;
     }
 
 }
