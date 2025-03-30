@@ -23,7 +23,8 @@
     "common.minecolonies.NetworkChannelMixin",
     "common.minecolonies.OpenCraftingGUIMessageMixin",
     "common.minecolonies.RecipeStorageMixin",
-    "common.minecraft.BasePressurePlateBlockMixin"
+    "common.minecraft.BasePressurePlateBlockMixin",
+    "common.minecraft.ItemEntityMixin"
   ],
   "client": [
     "client.minecolonies.ItemListModuleWindowMixin",
