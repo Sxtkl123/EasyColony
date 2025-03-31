@@ -8,8 +8,6 @@
     "accessor.minecolonies.GraveyardManagementModuleAccessor",
     "accessor.minecolonies.ItemResourceScrollAccessor",
     "accessor.minecolonies.MinimumStockModuleAccessor",
-    "common.domumornamentum.ShingleBlockMixin",
-    "common.domumornamentum.TimberFrameBlockMixin",
     "common.minecolonies.AbstractEntityAIBasicMixin",
     "common.minecolonies.AbstractEntityAICraftingMixin",
     "common.minecolonies.AbstractEntityAIStructureMixin",

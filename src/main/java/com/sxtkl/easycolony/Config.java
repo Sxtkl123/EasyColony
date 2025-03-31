@@ -112,6 +112,7 @@ public class Config {
         BUILDER.push("彩蛋设置");
         ALLOW_BURN_PAPER = BUILDER.comment("是否允许清明节彩蛋：如果允许，在坟墓前烧纸可以让死亡的市民安息，市民们将不会再第二天为其哀悼，但是同样该市民将无法复活。")
                 .define("allow_burn_paper", true);
+        BUILDER.pop();
 
         BUILDER.push("测试版功能设置");
         ALLOW_CRAFT_MULTI = BUILDER.comment("是否允许合成类工人一次性合成多个物品，允许则会像玩家一样一次性填满一组合成。")
