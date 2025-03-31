@@ -126,7 +126,6 @@ public abstract class AbstractResourceScrollBlock extends Block implements Entit
         if (!(tile instanceof TileEntityResourceScroll scroll)) return InteractionResult.PASS;
         if (scroll.getResourceScroll() == null) return InteractionResult.PASS;
         if (!(scroll.getResourceScroll().getItem() instanceof ItemResourceScroll item)) return InteractionResult.PASS;
-        if (!pLevel.isClientSide()) return InteractionResult.SUCCESS;
         ((ItemResourceScrollAccessor) item).invokeOpenWindow(scroll.getResourceScroll().getOrCreateTag(), pPlayer);
         return InteractionResult.SUCCESS;
     }

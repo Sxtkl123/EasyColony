@@ -20,7 +20,7 @@ public abstract class AbstractTileEntityResourceScroll extends BlockEntity {
     @Override
     public void load(@NotNull CompoundTag pTag) {
         super.load(pTag);
-        resourceScroll = ItemStack.of(pTag.getCompound("ResourceScroll"));
+        this.resourceScroll = ItemStack.of(pTag.getCompound("ResourceScroll"));
     }
 
     @Override

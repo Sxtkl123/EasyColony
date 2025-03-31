@@ -7,6 +7,7 @@ import com.minecolonies.api.colony.IGraveData;
 import com.minecolonies.api.tileentities.AbstractTileEntityGrave;
 import com.minecolonies.api.tileentities.AbstractTileEntityNamedGrave;
 import com.minecolonies.core.colony.CitizenData;
+import com.sxtkl.easycolony.Config;
 import com.sxtkl.easycolony.Easycolony;
 import com.sxtkl.easycolony.core.event.events.common.ItemEntityDeathEvent;
 import com.sxtkl.easycolony.extension.IGraveDataExtension;
@@ -31,6 +32,7 @@ public class BurnPaperEvent {
 
     @SubscribeEvent
     public static void onEntityDie(final ItemEntityDeathEvent event) {
+        if (!Config.allowBurnPaper) return;
         ItemEntity entity = event.getEntity();
         Entity owner = entity.getOwner();
         if (entity.getItem().getItem() != Items.PAPER) return;
