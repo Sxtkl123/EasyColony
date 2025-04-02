@@ -23,6 +23,8 @@ import static com.minecolonies.api.util.constant.InventoryConstants.*;
 
 public class ContainerCraftingStoneCutting extends AbstractContainerMenu {
 
+    private static final int TOTAL_SLOTS = 37;
+
     private List<StonecutterRecipe> recipes = List.of();
 
     private final Container inputContainer = new SimpleContainer(1);
@@ -110,35 +112,14 @@ public class ContainerCraftingStoneCutting extends AbstractContainerMenu {
 
     @NotNull
     @Override
-    public ItemStack quickMoveStack(final Player playerIn, final int index) {
-        if (index <= 1) {
+    public ItemStack quickMoveStack(final @NotNull Player playerIn, final int index) {
+        final Slot slot = this.slots.get(index);
+        if (!slot.hasItem()) {
             return ItemStack.EMPTY;
         }
-
-        ItemStack itemstack = ItemStackUtils.EMPTY;
-        final Slot slot = this.slots.get(index);
-        if (slot.hasItem()) {
-            final ItemStack itemstack1 = slot.getItem();
-            itemstack = itemstack1.copy();
-            if (index < HOTBAR_START) {
-                if (!this.moveItemStackTo(itemstack1, HOTBAR_START, TOTAL_SLOTS_FURNACE, false)) {
-                    return ItemStackUtils.EMPTY;
-                }
-            } else if ((index < TOTAL_SLOTS_FURNACE
-                    && !this.moveItemStackTo(itemstack1, 1, HOTBAR_START, false))
-                    || !this.moveItemStackTo(itemstack1, 1, TOTAL_SLOTS_FURNACE, false)) {
-                return ItemStack.EMPTY;
-            }
-            if (itemstack1.getCount() == 0) {
-                slot.set(ItemStackUtils.EMPTY);
-            } else {
-                slot.setChanged();
-            }
-            if (itemstack1.getCount() == itemstack.getCount()) {
-                return ItemStackUtils.EMPTY;
-            }
-        }
-        return itemstack;
+        ItemStack stack = slot.getItem();
+        this.handleSlotClick(this.slots.get(0), stack.copy());
+        return ItemStack.EMPTY;
     }
 
     public Player getPlayer() {
