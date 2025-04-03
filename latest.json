@@ -1,5 +1,5 @@
 {
-  "version": "1.1.5",
+  "version": "1.2.0",
   "content": {
     "zh_cn": "1. 现在石匠支持切石机配方\n2. 现在可以通过配置修改非殖民地食物惩罚\n3. 添加了一个清明节彩蛋，对着你的坟墓烧纸可以取消第二天的哀悼\n4. 修复了一系列的bug\n5. 添加了合成类市民一次性合成整组的功能，但是该功能因为稳定性原因默认关闭，且会与模组MineColonies_Compatibility冲突，建议使用无冲突版本游玩。\n6. 支持模拟殖民地1.1.838+",
     "en_us": "1. Stonemasons now support Stonecutter recipes\n2. Non-colony food penalties can now be adjusted via configuration\n3. Added a Tomb-Sweeping Day easter egg: Burning joss paper at graves cancels the next day's mourning period\n4. Fixed a series of bugs\n5. Added batch crafting for Synthesis-class citizens (disabled by default due to stability issues, conflicts with MineColonies_Compatibility mod - recommend using the conflict-free version instead)\n6. Support minecolonies 1.1.838+\nTranslated by DeepSeek."
