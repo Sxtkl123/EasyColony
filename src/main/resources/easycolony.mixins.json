@@ -9,7 +9,6 @@
     "accessor.minecolonies.ItemResourceScrollAccessor",
     "accessor.minecolonies.MinimumStockModuleAccessor",
     "common.minecolonies.AbstractEntityAIBasicMixin",
-    "common.minecolonies.AbstractEntityAICraftingMixin",
     "common.minecolonies.AbstractEntityAIStructureMixin",
     "common.minecolonies.AbstractTileEntityNamedGraveMixin",
     "common.minecolonies.BuildingStructureHandlerMixin",

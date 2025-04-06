@@ -78,8 +78,11 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
         if (!Config.allowCraftMulti) {
             return instance.fullfillRecipe(context, handlers);
         }
+        if (!(instance instanceof IMultiCraftExtension multiCraft)) {
+            return instance.fullfillRecipe(context, handlers);
+        }
         this.currentMaxCraftCount = getMaxCraftCount();
-        return ((IMultiCraftExtension) instance).fullfillRecipeAndCopy(context, handlers, true, this.currentMaxCraftCount) != null;
+        return multiCraft.fullfillRecipeAndCopy(context, handlers, true, this.currentMaxCraftCount) != null;
     }
 
     @Redirect(method = "craft", at = @At(value = "INVOKE", target = "Lcom/minecolonies/core/util/citizenutils/CitizenItemUtils;damageItemInHand(Lcom/minecolonies/api/entity/citizen/AbstractEntityCitizen;Lnet/minecraft/world/InteractionHand;I)V"))
