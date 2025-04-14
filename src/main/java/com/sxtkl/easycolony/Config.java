@@ -67,6 +67,8 @@ public class Config {
 
     private static final ForgeConfigSpec.BooleanValue ALLOW_BURN_PAPER;
 
+    private static final ForgeConfigSpec.BooleanValue ALLOW_STONE_CUTTING;
+
     static {
         BUILDER.push("通用配置");
         EASY_PICK_MATERIAL_AI = BUILDER.comment("简易化材料寻找AI：工人在架子上找原材料时，将直接在对应的小屋方块建筑进行。")
@@ -90,6 +92,11 @@ public class Config {
                 .defineInRange("builder_delay_magnification", 1.0, 0, Integer.MAX_VALUE);
         BUILDER_FIXED_DELAY = BUILDER.comment("建筑工人间隔：建筑工人间隔的固定值，只有建筑工人固定间隔设置为 fixed 时，该选项生效。")
                 .defineInRange("builder_fixed_delay", 15, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("合成工人配置");
+        ALLOW_STONE_CUTTING = BUILDER.comment("允许石匠使用切石机配方：决定是否允许石匠使用切石机配方，当设置为 false 后不会影响已经教授的配方，但会导致所有配方被禁用。")
+                .define("allow_stone_cutting", true);
         BUILDER.pop();
 
         BUILDER.push("复活配置");
@@ -153,6 +160,8 @@ public class Config {
 
     public static boolean allowBurnPaper;
 
+    public static boolean allowStoneCutting;
+
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
         easyBuilderAI = EASY_BUILDER_AI.get();
@@ -171,5 +180,6 @@ public class Config {
         allowToggleRecipeModeAsDefault = ALLOW_TOGGLE_RECIPE_MODE_AS_DEFAULT.get();
         allowCraftMulti = ALLOW_CRAFT_MULTI.get();
         allowBurnPaper = ALLOW_BURN_PAPER.get();
+        allowStoneCutting = ALLOW_STONE_CUTTING.get();
     }
 }
