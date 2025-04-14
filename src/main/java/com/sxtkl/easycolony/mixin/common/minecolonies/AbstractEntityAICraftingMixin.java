@@ -104,7 +104,12 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
         final int doneOpsCount = currentCount / countPerIteration;
         final int progressOpsCount = inProgressCount / countPerIteration;
         final int remainingOpsCount = currentRequest.getRequest().getCount() - doneOpsCount - progressOpsCount;
-        return Math.min(currentRecipeStorage.getPrimaryOutput().getMaxStackSize(), remainingOpsCount);
+
+        int calMin = (int) (Config.multiCraftSlope * getPrimarySkillLevel()) + Config.multiCraftIntercept;
+
+        int maxCraft = Math.min(calMin, Config.multiCraftMax);
+        maxCraft = Math.min(maxCraft, currentRecipeStorage.getPrimaryOutput().getMaxStackSize());
+        return Math.min(maxCraft, remainingOpsCount);
     }
 
 }

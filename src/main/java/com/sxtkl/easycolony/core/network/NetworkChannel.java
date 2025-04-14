@@ -2,6 +2,7 @@ package com.sxtkl.easycolony.core.network;
 
 import com.minecolonies.api.network.IMessage;
 import com.sxtkl.easycolony.Easycolony;
+import com.sxtkl.easycolony.core.network.messages.server.OpenSourceScrollMessage;
 import com.sxtkl.easycolony.core.network.messages.server.TryClearClipboardMessage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.LogicalSide;
@@ -28,6 +29,16 @@ public class NetworkChannel {
             final LogicalSide packetOrigin = ctx.getDirection().getOriginationSide();
             ctx.setPacketHandled(true);
             ctx.enqueueWork(() -> msg.onExecute(ctx, packetOrigin.equals(LogicalSide.CLIENT)));
+        });
+        INSTANCE.registerMessage(id++, OpenSourceScrollMessage.class, IMessage::toBytes, (msg) -> {
+            OpenSourceScrollMessage message = new OpenSourceScrollMessage();
+            message.fromBytes(msg);
+            return message;
+        }, (msg, ctxIn) -> {
+            final NetworkEvent.Context ctx = ctxIn.get();
+            final LogicalSide packetOrigin = ctx.getDirection().getOriginationSide();
+            ctx.setPacketHandled(true);
+            ctx.enqueueWork(() -> msg.onExecute(ctx, packetOrigin.equals(LogicalSide.SERVER)));
         });
     }
 

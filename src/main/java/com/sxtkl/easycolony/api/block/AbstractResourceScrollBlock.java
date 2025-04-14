@@ -2,11 +2,13 @@ package com.sxtkl.easycolony.api.block;
 
 import com.minecolonies.core.items.ItemResourceScroll;
 import com.sxtkl.easycolony.Easycolony;
+import com.sxtkl.easycolony.core.network.NetworkChannel;
+import com.sxtkl.easycolony.core.network.messages.server.OpenSourceScrollMessage;
 import com.sxtkl.easycolony.core.tileentity.TileEntityResourceScroll;
-import com.sxtkl.easycolony.mixin.accessor.minecolonies.ItemResourceScrollAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +28,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.Nullable;
 
@@ -125,8 +128,9 @@ public abstract class AbstractResourceScrollBlock extends Block implements Entit
         BlockEntity tile = pLevel.getBlockEntity(pPos);
         if (!(tile instanceof TileEntityResourceScroll scroll)) return InteractionResult.PASS;
         if (scroll.getResourceScroll() == null) return InteractionResult.PASS;
-        if (!(scroll.getResourceScroll().getItem() instanceof ItemResourceScroll item)) return InteractionResult.PASS;
-        ((ItemResourceScrollAccessor) item).invokeOpenWindow(scroll.getResourceScroll().getOrCreateTag(), pPlayer);
+        if (pLevel.isClientSide()) return InteractionResult.SUCCESS;
+        if (!(scroll.getResourceScroll().getItem() instanceof ItemResourceScroll)) return InteractionResult.PASS;
+        NetworkChannel.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) pPlayer), new OpenSourceScrollMessage(scroll.getResourceScroll()));
         return InteractionResult.SUCCESS;
     }
 

@@ -61,6 +61,7 @@ public class StoneCuttingCraftingModule extends AbstractCraftingBuildingModule.C
     @Override
     public void deserializeNBT(CompoundTag compound) {
         super.deserializeNBT(compound);
+        if (Config.allowStoneCutting) return;
         ListTag recipesTags = new ListTag();
         if (compound.contains(TAG_RECIPES)) {
             recipesTags = compound.getList(TAG_RECIPES, Tag.TAG_COMPOUND);
