@@ -1,7 +1,7 @@
 {
-  "version": "1.2.0",
+  "version": "1.2.1",
   "content": {
-    "zh_cn": "1. 现在石匠支持切石机配方\n2. 现在可以通过配置修改非殖民地食物惩罚\n3. 添加了一个清明节彩蛋，对着你的坟墓烧纸可以取消第二天的哀悼\n4. 修复了一系列的bug\n5. 添加了合成类市民一次性合成整组的功能，但是该功能因为稳定性原因默认关闭，且会与模组MineColonies_Compatibility冲突，建议使用无冲突版本游玩。\n6. 支持模拟殖民地1.1.838+",
-    "en_us": "1. Stonemasons now support Stonecutter recipes\n2. Non-colony food penalties can now be adjusted via configuration\n3. Added a Tomb-Sweeping Day easter egg: Burning joss paper at graves cancels the next day's mourning period\n4. Fixed a series of bugs\n5. Added batch crafting for Synthesis-class citizens (disabled by default due to stability issues, conflicts with MineColonies_Compatibility mod - recommend using the conflict-free version instead)\n6. Support minecolonies 1.1.838+\nTranslated by DeepSeek."
+    "zh_cn": "1. 现在市民受击警告会同时提示市民当前生命值了\n2. 添加了配置项，可以关闭石匠的切石机配方功能\n3. 添加了配置项，可以按照 y = kx + b 的形式来根据属性调整市民多组合成(multi-craft)时的次数\n4. 支持模拟殖民地1.1.864+\n5. 完善了资源卷轴的兼容性\n6. 现在不再会与MineColonies: Compatibility冲突了",
+    "en_us": "1. Updated citizen attack warnings to include current HP values in alert messages\n2. Added configurable option to disable Stonemason's stonecutter recipe functionality\n3. Implemented attribute-based multi-craft adjustment system using linear formula y = kx + b\n4. Official support for MineColonies coremod v1.1.864+\n5. Enhanced cross-mod compatibility framework for Resource Scrolls\n6. Resolved conflicts with MineColonies: Compatibility module\nTranslated by DeepSeek."
   }
 }
