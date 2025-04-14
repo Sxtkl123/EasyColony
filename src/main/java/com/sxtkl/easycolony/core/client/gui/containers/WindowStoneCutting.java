@@ -4,6 +4,7 @@ import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.api.crafting.RecipeStorage;
 import com.minecolonies.api.util.constant.TypeConstants;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
@@ -243,18 +244,27 @@ public class WindowStoneCutting extends AbstractContainerScreen<ContainerCraftin
             additionalOutput.add(list.get(i).assemble(container.getInputContainer(), Minecraft.getInstance().level.registryAccess()).copy());
         }
 
-        final IRecipeStorage storage = StandardFactoryController.getInstance().getNewInstance(
-                TypeConstants.RECIPE,
-                StandardFactoryController.getInstance().getNewInstance(TypeConstants.ITOKEN),
-                List.of(input),
-                3,
-                list.get(0).assemble(container.getInputContainer(), Minecraft.getInstance().level.registryAccess()).copy(),
-                Blocks.AIR,
-                null,
-                com.minecolonies.api.crafting.ModRecipeTypes.MULTI_OUTPUT_ID,
-                additionalOutput,
-                new ArrayList<>()
-        );
+//        final IRecipeStorage storage = StandardFactoryController.getInstance().getNewInstance(
+//                TypeConstants.RECIPE,
+//                StandardFactoryController.getInstance().getNewInstance(TypeConstants.ITOKEN),
+//                List.of(input),
+//                3,
+//                list.get(0).assemble(container.getInputContainer(), Minecraft.getInstance().level.registryAccess()).copy(),
+//                Blocks.AIR,
+//                null,
+//                com.minecolonies.api.crafting.ModRecipeTypes.MULTI_OUTPUT_ID,
+//                additionalOutput,
+//                new ArrayList<>()
+//        );
+
+        final IRecipeStorage storage = RecipeStorage
+                .builder()
+                .withInputs(List.of(input))
+                .withPrimaryOutput(list.get(0).assemble(container.getInputContainer(), Minecraft.getInstance().level.registryAccess()).copy())
+                .withAlternateOutputs(additionalOutput)
+                .withGridSize(3)
+                .withRecipeType(com.minecolonies.api.crafting.ModRecipeTypes.MULTI_OUTPUT_ID)
+                .build();
 
         Network.getNetwork().sendToServer(new AddRemoveRecipeMessage(building, false, storage, module.getProducer().getRuntimeID()));
     }
