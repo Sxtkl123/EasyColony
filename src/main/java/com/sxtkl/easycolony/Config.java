@@ -132,7 +132,7 @@ public class Config {
                 .define("allow_craft_multi", false);
         MULTI_CRAFT_MAX = BUILDER.comment("多组合成上限：建筑工人一次性多组合成的次数上限。")
                 .defineInRange("multi_craft_max", 64, 64, Integer.MAX_VALUE);
-        MULTI_CRAFT_INTERCEPT = BUILDER.comment("多组合成截距：单次合成公式为 y = kx+b 形式，x 为工人的技巧属性。此配置决定b。")
+        MULTI_CRAFT_INTERCEPT = BUILDER.comment("多组合成截距：单次合成公式为 y = kx+b 形式，x 为工人的次要属性属性。此配置决定b。")
                 .defineInRange("multi_craft_intercept", 4, 1, Integer.MAX_VALUE);
         MULTI_CRAFT_SLOPE = BUILDER.comment("多组合成斜率：单次合成公式为 y = kx+b 形式，x 为工人的技巧属性。此配置决定k。")
                 .defineInRange("multi_craft_slope", 0.75, 0, Integer.MAX_VALUE);
