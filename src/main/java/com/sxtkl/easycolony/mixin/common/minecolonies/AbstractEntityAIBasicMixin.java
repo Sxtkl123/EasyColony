@@ -30,4 +30,5 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
         if (!Config.easyPickMaterialAI) return pos;
         return pos == null ? null : building.getTileEntity().getTilePos();
     }
+
 }
